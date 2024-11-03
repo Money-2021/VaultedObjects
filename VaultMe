@@ -6,8 +6,6 @@
     
      string folder = Environment.GetEnvironmentVariable("Envionment");
      string SecureIdentity = Environment.GetEnvironmentVariable("SinA");
-     decimal amount = 2.50M;
-     // Owner calls SignHash with ContentHash
      string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + SecureIdentity + ".jwt";
      RecoveryResponse rsp = GetUserToken(userTokenPath);
 
@@ -19,7 +17,7 @@
      // Obtain Function JwToken
      HttpClient _httpClient = new HttpClient();
      // Build funtion endpoint Uri
-     string _relativeUrl = "api/Coin/IssuePayMeToken?amount=" + amount.ToString("N2");
+     string _relativeUrl = "api/VaultMe";
      Uri _uri = new Uri(_baseUri, _relativeUrl);
      _httpClient.BaseAddress = _baseUri;
      // Add User Jwtoken
