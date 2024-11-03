@@ -1,0 +1,45 @@
+ [TestMethod]
+ public void TestMethod_add_object()
+ {
+     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+     string sToken = System.IO.File.ReadAllText(userTokenPath);
+     RecoveryResponse r = System.Text.Json.JsonSerializer.Deserialize<RecoveryResponse>(sToken);
+ 
+     // Use VaultMe token for this vaulting session
+     userTokenPath = @"D:\Examples\VO\VaultMe-" + SecureIdentity + ".jwt";
+     sToken = System.IO.File.ReadAllText(userTokenPath);
+   
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.userToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Obtain Function JwToken
+     HttpClient _httpClient = new HttpClient();
+     // Build funtion endpoint Uri
+     string _relativeUrl = "api/AddObject?filename=test.txt";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+
+     // Add VaultMe Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.userToken);
+
+     // Add Vaulted object 
+     ByteArrayContent content = new ByteArrayContent(Encoding.UTF8.GetBytes("This is test content"));
+
+     // Get Vaulted Object Identifier response
+     HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // GUID
+         string onjectId = response.Content.ReadAsStringAsync().Result;
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
