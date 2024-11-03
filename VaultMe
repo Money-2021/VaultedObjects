@@ -1,7 +1,7 @@
 1. Issue VaultMe Token
 
 [TestMethod]
- public void UseCase_payment_IssueVaultMeToken()
+ public void UseCase_IssueVaultMeToken()
  {
     
      string folder = Environment.GetEnvironmentVariable("Envionment");
