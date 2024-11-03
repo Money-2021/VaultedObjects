@@ -28,7 +28,7 @@
      if (response.IsSuccessStatusCode)
      {
          string jwToken = response.Content.ReadAsStringAsync().Result;
-         string sPath = @"D:\Examples\" + node + @"\Payments\PayMe-" + SecureIdentity + ".jwt";
+         string sPath = @"D:\Examples\" + node + @"\VO\VaultMe-" + SecureIdentity + ".jwt";
          System.IO.File.WriteAllText(sPath, jwToken);
      }
      else
