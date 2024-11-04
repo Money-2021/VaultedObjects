@@ -1,4 +1,7 @@
 1. Issue VaultMe Token
+Security Policy
+a) A call must be made to VaultMe each and every vaulting session 
+b) If required a call may be made for each AddObject, depending on the risk user assesment.
 
 [TestMethod]
  public void UseCase_IssueVaultMeToken()
