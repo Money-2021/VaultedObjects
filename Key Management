@@ -24,3 +24,6 @@ Notes
 1. According to "Distinguisher and Related-Key Attack on the Full AES-256 (Extended Version)", the current best estimate of difficultity is 2^231.
 But the best one can say aboutr any encryption system is that to the best of ones knowledge there exist no knowen public atatck on AES256, 
 this doe snot means that no attack vector exists just that there exist no known practical exploits today. 
+2. Cryptographical advancement (that allows an attacker to recover the plaintext without trying all possible keys); this is an open question.
+ I personally don't expect a total break; that is, something that, given a reasonable amount of ciphertext (and possibly some known plaintext),
+ will allow them to decrypt; I wouldn't be that shocked if someone in the next hundred years found a theoretical break (e.g. O(2^150) effort given vast mounds of chosen plaintext).
