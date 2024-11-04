@@ -18,7 +18,7 @@ KMS Principles
 5. There exist no centralised key storage of management system, all keys are generaated or regenerated via decentralised pprocess.
 6. All KGs have a policy of single usage or at most exist for the duration of a vaulting systen.
 7. All KG's domains are segregated via the use of doamin spcific universals, there exist no interoperablity between KMS domains or KG's.
-8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys is not an atatck vector for the KMS.
+8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys is not an attack vector for the KMS.
   
 
 Notes
