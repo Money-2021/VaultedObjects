@@ -1,8 +1,8 @@
-Example Valuted Object
+Examples
 
 1. The Vaulted OBject
 eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsIkpXSyI6IntcdTAwMjJrdHlcdTAwMjI6XHUwMDIyRUNcdTAwMjIsXHUwMDIyY3J2XHUwMDIyOlx1MDAyMlAyNTZcdTAwMjIsXHUwMDIyeFx1MDAyMjpcdTAwMjJST1dKUXJyUS05UFRyWnFmWVBPZjdlMGhBNTVFTXExNkFtNmVfcFRBa3BjQVx1MDAyMixcdTAwMjJ5XHUwMDIyOlx1MDAyMmw3QzdqbU9IYmhLMWQ1d0lxdldvSWo3ZkFUS2tNQjUzYjlBYmp5M20zUjhcdTAwMjJ9In0.eyJTZWN1cmVJZGVudGl0eSI6IjAxMDE2MzRjNTZlZGU5MGQ5YzA2YzkxMDdlNzJhMTZlMTc2OWY3NWM5MjJlIiwiVHlwZSI6Ik9iamVjdCIsIk9iamVjdElkIjoiMjE2MWE4ZDgtNTkwYi00ZTY3LTkzMGUtM2UzNjljNmRkYzFjIiwiT2JqZWN0SW1wcmludCI6IkFlUk0xWnNzRG9yTHVaWkgxWG4zVDVHOTVtNUtKRDNDRXFQSTZIT2NtVmM9IiwiQXNzZXRJZCI6IjEyMzQiLCJGaWxlbmFtZSI6IlRlc3QudHh0IiwiSldFIjoiZXlKaGJHY2lPaUpCTWpVMlMxY2lMQ0psYm1NaU9pSkJNalUyUjBOTklpd2lkSGx3SWpvaVNsZEZJbjAudWxDalUwYWVoVExUM1FlMmxreWc3NGo1dUp6ZlBoc2RIZlZGcjFiS3BlQ0EzMlo2eUI5c1JBLk9LOVp6NTRGVjB3d0didUVfVVNCZmhTcW1aZW8wN2RfTjFTeUZNdDVvWkFqWUdnYVlBIiwiVGFnIjoiWXlYMVgvaDlTajRKZm43VExtUmtqblRxWDVmZmVPMnU0eHJpb1F6MW9ZbzF5V245aVZRTG9BPT0iLCJuYmYiOjE3MjYyNzIwMDMsImV4cCI6MTc1NzgwODAwMywiaWF0IjoxNzI2MjcyMDAzLCJpc3MiOiIwMTAxNjM0YzU2ZWRlOTBkOWMwNmM5MTA3ZTcyYTE2ZTE3NjlmNzVjOTIyZSIsImF1ZCI6Imh0dHBzOi8vZnVuY3Rpb25hcHB2YXVsdGVkb2JqZWN0cy5henVyZXdlYnNpdGVzLm5ldCJ9.MEcCIBUfZIkYvr4N1KgnHNxy4eg8ffgnygm8snAZBMePNAEKAiE7qo9WYceQ3Apeh19ImrUtZY6euzxYvT-3wmUCoKGCjAA
-2. Decoded Using JWT.IO
+1.1 Decoded Using JWT.IO
 a) HEADER:ALGORITHM & TOKEN TYPE
 // Public EC key, used to validate the Vaulted Object Integrity
 {
@@ -27,7 +27,7 @@ b) PAYLOAD:DATA
   "iss": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
   "aud": "https://functionappvaultedobjects.azurewebsites.net"
 }
-3. Decode of JWE field above
+1.2 Decode of JWE field above
 "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2R0NNIiwidHlwIjoiSldFIn0.ulCjU0aehTLT3Qe2lkyg74j5uJzfPhsdHfVFr1bKpeCA32Z6yB9sRA.OK9Zz54FV0wwGbuE_USBfhSqmZeo07d_N1SyFMt5oZAjYGgaYA
 a) HEADER:ALGORITHM & TOKEN TYPE
 {
@@ -37,3 +37,28 @@ a) HEADER:ALGORITHM & TOKEN TYPE
 }
 b) PAYLOAD:DATA - Encrypted Content.
 "�P�SF��2��\u0007��L�������>\u001b\u001d\u001d�E�Vʥ���fz�\u001flD"
+
+2. Vaulted Object Certificate or Proof of Existance
+{
+  "context": "1.3.6.1.4.1.3220.1.1.6",
+  "type": "SHA256",
+  "objectId": "09d1e72c-6184-43f5-8a8e-3fe4de215880",
+  "fileName": "Test.txt",
+  "ts": "2024-09-12T01:13:41",
+  "objectImprint": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
+  "targetHash": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
+  "merkleRoot": "be64102bc26fbfa5344ecf3f64202232ddae7dfe158559bcddf740759b639b7c",
+  "validated": "True",
+  "latitude": "-33.86",
+  "longitude": "151.2094",
+  "anchorIdentity": "01013412f76c8ef52099cbd1ad2b00c1a45eda2e8e56",
+  "anchorTickId": "1",
+  "merkleProof": [
+    {
+      "Right": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957"
+    },
+    {
+      "Right": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957"
+    }
+  ]
+}
