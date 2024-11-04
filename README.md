@@ -5,4 +5,4 @@ Vaulted Objects Client
 This is the public domain SDK as a set of Visual Studio Unit test cases, which can be executed within Visual Studio, 
 without the need for any further application development. 
 
-In order to use the infastucture, each developer or user, must first obtain a Seure Identity->User Token.
+In order to use the infastucture, each developer or user, must first obtain a Seure Identity->User Token, from a vault operator.
