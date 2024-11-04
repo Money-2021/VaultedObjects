@@ -27,7 +27,7 @@ b) PAYLOAD:DATA
   "iss": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
   "aud": "https://functionappvaultedobjects.azurewebsites.net"
 }
-3. Decode of JWE fild above
+3. Decode of JWE field above
 a) HEADER:ALGORITHM & TOKEN TYPE
 {
   "alg": "A256KW",
