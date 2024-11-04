@@ -32,7 +32,7 @@
      HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
      if (response.IsSuccessStatusCode)
      {
-         // GUID
+         // GUID, link Guid with vaulted file
          string onjectId = response.Content.ReadAsStringAsync().Result;
      }
      else
