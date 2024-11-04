@@ -1,4 +1,5 @@
- [TestMethod]
+This function provides a digital certificate of the proof of existance of a Vaulted Object within a specific space-time context.
+[TestMethod]
  public void TestMethod_certify_object()
  {
      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
