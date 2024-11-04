@@ -20,3 +20,7 @@ KMS Principles
 7. All KG's domains are segregated via the use of doamin spcific universals, there exist no interoperablity between KMS domains or KG's.
   
 
+Notes
+1. According to "Distinguisher and Related-Key Attack on the Full AES-256 (Extended Version)", the current best estimate of difficultity is 2^231.
+But the best one can say aboutr any encryption system is that to the best of ones knowledge there exist no knowen public atatck on AES256, 
+this doe snot means that no attack vector exists just that there exist no known practical exploits today. 
