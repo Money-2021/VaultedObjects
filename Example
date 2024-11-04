@@ -28,6 +28,7 @@ b) PAYLOAD:DATA
   "aud": "https://functionappvaultedobjects.azurewebsites.net"
 }
 3. Decode of JWE field above
+"eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2R0NNIiwidHlwIjoiSldFIn0.ulCjU0aehTLT3Qe2lkyg74j5uJzfPhsdHfVFr1bKpeCA32Z6yB9sRA.OK9Zz54FV0wwGbuE_USBfhSqmZeo07d_N1SyFMt5oZAjYGgaYA
 a) HEADER:ALGORITHM & TOKEN TYPE
 {
   "alg": "A256KW",
