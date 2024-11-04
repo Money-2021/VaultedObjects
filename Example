@@ -1,0 +1,38 @@
+Example Valuted Object
+
+1. The Vaulted OBject
+eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsIkpXSyI6IntcdTAwMjJrdHlcdTAwMjI6XHUwMDIyRUNcdTAwMjIsXHUwMDIyY3J2XHUwMDIyOlx1MDAyMlAyNTZcdTAwMjIsXHUwMDIyeFx1MDAyMjpcdTAwMjJST1dKUXJyUS05UFRyWnFmWVBPZjdlMGhBNTVFTXExNkFtNmVfcFRBa3BjQVx1MDAyMixcdTAwMjJ5XHUwMDIyOlx1MDAyMmw3QzdqbU9IYmhLMWQ1d0lxdldvSWo3ZkFUS2tNQjUzYjlBYmp5M20zUjhcdTAwMjJ9In0.eyJTZWN1cmVJZGVudGl0eSI6IjAxMDE2MzRjNTZlZGU5MGQ5YzA2YzkxMDdlNzJhMTZlMTc2OWY3NWM5MjJlIiwiVHlwZSI6Ik9iamVjdCIsIk9iamVjdElkIjoiMjE2MWE4ZDgtNTkwYi00ZTY3LTkzMGUtM2UzNjljNmRkYzFjIiwiT2JqZWN0SW1wcmludCI6IkFlUk0xWnNzRG9yTHVaWkgxWG4zVDVHOTVtNUtKRDNDRXFQSTZIT2NtVmM9IiwiQXNzZXRJZCI6IjEyMzQiLCJGaWxlbmFtZSI6IlRlc3QudHh0IiwiSldFIjoiZXlKaGJHY2lPaUpCTWpVMlMxY2lMQ0psYm1NaU9pSkJNalUyUjBOTklpd2lkSGx3SWpvaVNsZEZJbjAudWxDalUwYWVoVExUM1FlMmxreWc3NGo1dUp6ZlBoc2RIZlZGcjFiS3BlQ0EzMlo2eUI5c1JBLk9LOVp6NTRGVjB3d0didUVfVVNCZmhTcW1aZW8wN2RfTjFTeUZNdDVvWkFqWUdnYVlBIiwiVGFnIjoiWXlYMVgvaDlTajRKZm43VExtUmtqblRxWDVmZmVPMnU0eHJpb1F6MW9ZbzF5V245aVZRTG9BPT0iLCJuYmYiOjE3MjYyNzIwMDMsImV4cCI6MTc1NzgwODAwMywiaWF0IjoxNzI2MjcyMDAzLCJpc3MiOiIwMTAxNjM0YzU2ZWRlOTBkOWMwNmM5MTA3ZTcyYTE2ZTE3NjlmNzVjOTIyZSIsImF1ZCI6Imh0dHBzOi8vZnVuY3Rpb25hcHB2YXVsdGVkb2JqZWN0cy5henVyZXdlYnNpdGVzLm5ldCJ9.MEcCIBUfZIkYvr4N1KgnHNxy4eg8ffgnygm8snAZBMePNAEKAiE7qo9WYceQ3Apeh19ImrUtZY6euzxYvT-3wmUCoKGCjAA
+2. Decoded Using JWT.IO
+a) HEADER:ALGORITHM & TOKEN TYPE
+
+{
+  "alg": "ES256",
+  "typ": "JWT",
+  "JWK": "{\"kty\":\"EC\",\"crv\":\"P256\",\"x\":\"ROWJQrrQ-9PTrZqfYPOf7e0hA55EMq16Am6e_pTAkpcA\",\"y\":\"l7C7jmOHbhK1d5wIqvWoIj7fATKkMB53b9Abjy3m3R8\"}"
+}
+
+b) PAYLOAD:DATA
+{
+  "SecureIdentity": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+  "Type": "Object",
+  "ObjectId": "2161a8d8-590b-4e67-930e-3e369c6ddc1c",
+  "ObjectImprint": "AeRM1ZssDorLuZZH1Xn3T5G95m5KJD3CEqPI6HOcmVc=",
+  "AssetId": "1234",
+  "Filename": "Test.txt",
+  "JWE": "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2R0NNIiwidHlwIjoiSldFIn0.ulCjU0aehTLT3Qe2lkyg74j5uJzfPhsdHfVFr1bKpeCA32Z6yB9sRA.OK9Zz54FV0wwGbuE_USBfhSqmZeo07d_N1SyFMt5oZAjYGgaYA",
+  "Tag": "YyX1X/h9Sj4Jfn7TLmRkjnTqX5ffeO2u4xrioQz1oYo1yWn9iVQLoA==",
+  "nbf": 1726272003,
+  "exp": 1757808003,
+  "iat": 1726272003,
+  "iss": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+  "aud": "https://functionappvaultedobjects.azurewebsites.net"
+}
+3. Decode of JWE fild above
+a) HEADER:ALGORITHM & TOKEN TYPE
+{
+  "alg": "A256KW",
+  "enc": "A256GCM",
+  "typ": "JWE"
+}
+b) PAYLOAD:DATA - Encrypted Content.
+"�P�SF��2��\u0007��L�������>\u001b\u001d\u001d�E�Vʥ���fz�\u001flD"
