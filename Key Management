@@ -14,7 +14,7 @@ The solution is quantium safe as a brute force attack on the KMS would thereticl
 KMS Principles
 
 1. A cryptosystem should be secure, even if everything about the system, except the key, is public knowledge. This concept is widely embraced by cryptographers, in contrast to security through obscurity, which is not.
-2. There exists no form of key storage within any element of the KMS. All keys are generated on demand using a proven key Generator with at least 40 years of operational experience.
+2. There exists no form of key storage within any element of the KMS. All keys are generated on demand using a secure key Generator, with at least 40 years of operational experience with no publicly known vulnerablities.
 3. All KG seed or keying material travels within a trusted path, and is protected to the same level as any generated key material.
 4. Within the KMS key material is never stored (ever) and always moves external to any key usage channel.
 5. There exist no centralised key storage of management system, all keys are generated or regenerated via decentralised KG process.
