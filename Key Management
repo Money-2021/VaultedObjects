@@ -1,5 +1,6 @@
 Once the secrets of the algorithm’s implementation are discovered (as they often are), systems using these algorithms become vulnerable to attack. 
 That’s why, according to Kerckhoffs’s Principle, the only secret element of an encryption algorithm should be the key itself.
+The objectiuve of the Vaulted Object KMS is to provide as close to zero atatck surface as techncially and practiclaly possible today.
 
 Encryption keys are a fundamental component of the security of cryptographic systems and should be strongly protected. 
 In order to properly protect your encryption key, you’ll need a key management system.
