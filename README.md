@@ -11,3 +11,4 @@ Notes
 1.Valuted Objects, provide a means for a single secure Identity to enforce rights of possesion over a valuted objetc.
 2.Ownership is a legal concept that grants individuals the bundle of property rights. By contrast, possession refers to control over property and the right to use or occupy it. 
 Individuals may own property without possessing it or vice versa.
+3. Valuted Objects are subject to the Laws of a Digital World as defined via https://www.internationalsettlementassociation.org/the-laws-of-digital-world
