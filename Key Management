@@ -11,15 +11,16 @@ The valuted object KMS is a proprietry system protected as a Trade Secret, conta
 The solution is quantium safe as a brute force attack on the KMS would thereticlaly take 2.29*10^32 years. For reference, the universe is currently about 1.38×10^10 years old.
 
 KMS Principles
+
 1. A cryptosystem should be secure, even if everything about the system, except the key, is public knowledge. This concept is widely embraced by cryptographers, in contrast to security through obscurity, which is not.
 2. There exists no form of key storage within any element of the KMS. All keys are generated on demand using a proven key Generator with at least 40 years of operational experience.
-3. All KG seed or keying material travels within a trusted path, and is  protected to the same level as any generated key material.
+3. All KG seed or keying material travels within a trusted path, and is protected to the same level as any generated key material.
 4. Within the KMS key material is never stored (ever) and always moves external to any key usage channel.
-5. There exist no centralised key storage of management system, all keys are generaated or regenerated via decentralised KG process.
-6. All generated keys have a security policy which requires single usage or at most has an ephemerial existance for the duration of a the vaulting systen.
-7. All KG's domains are segregated via the use of doamin spcific universals, there exist no interoperablity between KMS domains or KG's.
-8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys must not be an attack vector for any  KMS.
-  
+5. There exist no centralised key storage of management system, all keys are generated or regenerated via decentralised KG process.
+6. All generated keys have a security policy which requires single usage or at most has an ephemeral existence for the duration of a the vaulting system.
+7. All KG's domains are segregated via the use of domain specific universals, there exist no interoperability between KMS domains or KG's.
+8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys must not be an attack vector for any KMS.
+ 
 
 Notes
 1. According to "Distinguisher and Related-Key Attack on the Full AES-256 (Extended Version)", the current best estimate of difficultity is 2^231.
