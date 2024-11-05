@@ -8,6 +8,6 @@ without the need for any further application development.
 In order to use the infastucture, each developer or user, must first obtain a Seure Identity->User Token, from a vault operator.
 
 Notes
-1.Valuted Objects, provide a measn for a single secure Identity to enforce rights of possesion over a valuted objetc.
+1.Valuted Objects, provide a means for a single secure Identity to enforce rights of possesion over a valuted objetc.
 2.Ownership is a legal concept that grants individuals the bundle of property rights. By contrast, possession refers to control over property and the right to use or occupy it. 
 Individuals may own property without possessing it or vice versa.
