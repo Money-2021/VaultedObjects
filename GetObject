@@ -11,8 +11,7 @@ public void TestMethod_get_object()
     // Extract Function endpoint from User Token
     var securityToken = new JwtSecurityToken(r.userToken);
     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
-    //_baseUri = new Uri("http://localhost:54718/");
-
+  
     // Obtain Function JwToken
     HttpClient _httpClient = new HttpClient();
     // Build funtion endpoint Uri
