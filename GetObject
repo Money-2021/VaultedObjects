@@ -24,7 +24,6 @@ public void TestMethod_get_object()
     // Calc Hash
     string shash = id.ToString() + SecureIdentity;
     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
-    _httpClient.DefaultRequestHeaders.Add("x-hash", Convert.ToBase64String(hashBytes));
     // Authenticate user has HOTP share
     var twoFactorAuthenticator = new Google.Authenticator.TwoFactorAuthenticator();
     long counter = BytesToLong(hashBytes);
