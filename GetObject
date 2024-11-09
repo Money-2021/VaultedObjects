@@ -18,7 +18,7 @@ public void TestMethod_get_object()
     Uri _uri = new Uri(_baseUri, _relativeUrl);
     _httpClient.BaseAddress = _baseUri;
 
-    // Add VaultMe Jwtoken
+    // Add User or Device Jwtoken
     _httpClient.DefaultRequestHeaders.Add("x-token", r.userToken);
  
     // Calc Hash
