@@ -41,3 +41,38 @@ This function provides a digital certificate of the proof of existance of a Vaul
      }
 
  }
+
+// 2. Validate Response
+[TestMethod]
+public void Admin_certificate_proof()
+{
+      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+      string spath = @"D:\Examples\VO\Certificate-" + SecureIdentity + ".json";
+      string json = System.IO.File.ReadAllText(spath);
+
+      string s =  System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("objectImprint").ToString();
+      byte[] ObjectImprint = HexEncoder.Decode(s);
+      s = System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("merkleRoot").ToString();
+      byte[] MerkleRoot = HexEncoder.Decode(s);
+      string proof = System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("merkleProof").ToString();
+
+      bool bResult = ValidateProof(ObjectImprint, MerkleRoot, proof);
+
+}
+public static bool ValidateProof(byte[] objectImprint,byte[] merkleRoot, string merkleProof )
+{
+    // Deserialise proof
+    Dictionary<string, string>[] values = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>[]>(merkleProof);
+    // Load Proof for this Coin
+    MerkleTools.Proof e = new MerkleTools.Proof(objectImprint, merkleRoot, SHA256.Create());
+    foreach (Dictionary<string, string> value in values)
+    {
+        if (value.ContainsKey("right"))
+            e.AddRight(Hex.HexToBytes(value.Values.First()));
+        else
+            e.AddLeft(Hex.HexToBytes(value.Values.First()));
+    }
+    // Validate Coin Hash value exists in Supply via the Coin Merkle Proof
+    bool bResult = e.Validate();
+    return bResult;
+}
