@@ -63,7 +63,7 @@ public static bool ValidateProof(byte[] objectImprint,byte[] merkleRoot, string 
 {
     // Deserialise proof
     Dictionary<string, string>[] values = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>[]>(merkleProof);
-    // Load Proof for this Coin
+    // Load Proof for this Object
     MerkleTools.Proof e = new MerkleTools.Proof(objectImprint, merkleRoot, SHA256.Create());
     foreach (Dictionary<string, string> value in values)
     {
