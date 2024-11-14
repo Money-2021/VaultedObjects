@@ -76,3 +76,29 @@ public static bool ValidateProof(byte[] objectImprint,byte[] merkleRoot, string 
     bool bResult = e.Validate();
     return bResult;
 }
+
+// 3. Example
+{
+  "context": "1.3.6.1.4.1.3220.1.1.6",
+  "type": "SHA256",
+  "objectId": "eaa68a91-7b83-4f4a-81ec-fdde6d67d33d",
+  "fileName": "Test.txt",
+  "ts": "2024-11-11T22:21:15",
+  "objectImprint": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
+  "extracted": "True",
+  "extractedDate": "2024-11-11T23:35:02",
+  "targetHash": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
+  "merkleRoot": "1915d09f733cbdde65ffb3b4df4b54038b7928879efbe7a264f54d62ba65e430",
+  "validated": "True",
+  "latitude": "-33.8660",
+  "longitude": "151.2094",
+  "tick": "1731363675",
+  "anchorIdentity": "01013412f76c8ef52099cbd1ad2b00c1a45eda2e8e56",
+  "anchorTickId": "1",
+  "anchorTick": "1731364275",
+  "merkleProof": [
+    {
+      "Right": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957"
+    }
+  ]
+}
