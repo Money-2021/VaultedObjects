@@ -12,3 +12,5 @@ Notes
 2.Ownership is a legal concept that grants individuals the bundle of property rights. By contrast, possession refers to control over property and the right to use or occupy it. 
 Individuals may own property without possessing it or vice versa.
 3. Valuted Objects are subject to the Laws of a Digital World as defined via https://www.internationalsettlementassociation.org/the-laws-of-digital-world
+
+ Vaulted Objects durability, for storage resources of at least 99.9999999999% (12 9s) over a given year.
