@@ -1,6 +1,7 @@
 Once the secrets of the algorithm’s implementation are discovered (as they often are), systems using these algorithms become vulnerable to attack. 
 That’s why, according to Kerckhoffs’s Principle, the only secret element of an encryption algorithm should be the key itself.
 The objectiuve of the Vaulted Object KMS is to provide as close to zero atatck surface as techncially and practiclaly possible today, while acknowledging that a zero risk system is imposable, and hence some degree of residual risk must always exist.
+The foundation of all Key Generation is a hardware based random source of enthropy.
 
 Encryption keys are a fundamental component of the security of cryptographic systems.In order to properly protect your encryption key, you’ll need a key management system.
 Key generation is the process of generating keys in cryptography. A key is used to encrypt and decrypt Vaulted Objects. A device or program used to generate keys is called a key generator or KG.
@@ -21,6 +22,7 @@ KMS Principles
 6. All generated keys have a security policy which requires single usage or at most has an ephemeral existence for the duration of a the vaulting system.
 7. All KG's domains are segregated via the use of domain specific universals, there exist no interoperability between KMS domains or KG's.
 8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys must not be an attack vector for any KMS.
+9. All key material is derived from a hardware Random source.
  
 
 Notes
