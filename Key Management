@@ -6,7 +6,7 @@ The foundation of all Key Generation is a hardware based random source of enthro
 Encryption keys are a fundamental component of the security of cryptographic systems.In order to properly protect your encryption key, you’ll need a key management system.
 Key generation is the process of generating keys in cryptography. A key is used to encrypt and decrypt Vaulted Objects. A device or program used to generate keys is called a key generator or KG.
 
-The security of the Valuted Object KMS is foundational to the security of the Vaulted Object framwork.
+The security of the Valuted Object KMS, code named Medley, is foundational to the security of the Vaulted Object framwork.
 
 THE FRAMEWORK
 The valuted object KMS is a proprietry system protected as a Trade Secret, contained within a hardware protected trust zone.
