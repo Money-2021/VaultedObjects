@@ -1,24 +1,36 @@
 This demonstrates a common Valuting orld flow, for any user applciations
 
- [TestMethod]
- public void TestMethod_execute()
- {
-     string sin = Environment.GetEnvironmentVariable("TestA");
-     string userTokenPath = @"D:\Examples\VO\Token-" + sin + ".jwt";
+[TestMethod]
+public void TestMethod_execute()
+{
+    string sin = Environment.GetEnvironmentVariable("TestA");
+    string userTokenPath = @"D:\Examples\VO\Token-" + sin + ".jwt";
 
-     //Establish vaulting session
-     string vaultMeToken = vault_me(userTokenPath);
-     // Object to Vault
-     byte[] data = Encoding.UTF8.GetBytes("This is test content");
-     // Vault  Object
-     Guid id = add_object(vaultMeToken, data);
-     // Certify Vaulted Object 
-     string certificate = certify_object(userTokenPath, id);  
-     // Save Certificate and Valuted Object Id
-     string spath = @"D:\Examples\VO\Certificate-" + id.ToString() + ".json";
-     System.IO.File.WriteAllText(spath, certificate);
+    //Establish vaulting session
+    string vaultMeToken = vault_me(userTokenPath);
+    // Object to Vault
+    byte[] data = Encoding.UTF8.GetBytes("This is test content");
+    // Vault  Object
+    Guid id = add_object(vaultMeToken, "test.txt", data);
+    Debug.WriteLine("Created Vaulted ObjectId = " + id.ToString());
 
- }
+    // Certify Vaulted Object 
+    string certificate = certify_object(userTokenPath, id);
+    if (certificate == string.Empty)
+    {
+        // Ticks require a minimium of two records.
+        Debug.WriteLine("No Tick available, try again latter.");
+    }
+    else
+    {
+        // Save Certificate and Valuted Object Id
+        string spath = @"D:\Examples\VO\Certificate-" + id.ToString() + ".json";
+        System.IO.File.WriteAllText(spath, certificate);
+        Debug.WriteLine("Certificate saved.");
+    }
+    Debug.WriteLine("Execute completed.");
+}
+
 
     private string vault_me(string userTokenPath)
     {
@@ -62,7 +74,7 @@ This demonstrates a common Valuting orld flow, for any user applciations
         }
 
     }
-    private Guid add_object(string vaultMeToken, byte[] data)
+    private Guid add_object(string vaultMeToken, string filename , byte[] data)
     {
         // Extract endpoint from Token
         var securityToken = new JwtSecurityToken(vaultMeToken);
@@ -70,7 +82,7 @@ This demonstrates a common Valuting orld flow, for any user applciations
 
         HttpClient _httpClient = new HttpClient();
         // Build funtion endpoint Uri
-        string _relativeUrl = "Object/Add?filename=test.txt";
+        string _relativeUrl = "Object/Add?filename=" + filename;
         Uri _uri = new Uri(_baseUri, _relativeUrl);
         _httpClient.BaseAddress = _baseUri;
         // Add VaultMe Jwtoken
@@ -125,7 +137,8 @@ This demonstrates a common Valuting orld flow, for any user applciations
         {
             // fail
             string error = response.Content.ReadAsStringAsync().Result;
-            throw new Exception(error);
+            return string.Empty;
+            
         }
 
     }
