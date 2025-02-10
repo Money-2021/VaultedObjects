@@ -23,10 +23,11 @@ KMS Principles
 7. All KG's domains are segregated via the use of domain specific universals, there exist no interoperability between KMS domains or KG's.
 8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys must not be an attack vector for any KMS.
 9. All key material is derived from a Quantum Random Numbers source, and no key is ever reused.
-10. There exist no HSM elements within the framework as they are not required to store keys.
+10. There exist no HSM elements within the framework as they are not required to store or process keys.
  
 
 Notes
 1. AES, all Public Ket and all Post quantium algorithm are NOT ITS ciphers and hence cannto be proven secure.
 2. The history and usage of KG's is derived from the theorically secure One-Time-Pad. The first mass deployed Key Generator was the KG-84  developed in 1983 and was first introduced in early 1984.
 The keying of each KG was a manual process via a secure KYK-13 device.
+3. The Key Generator algorithm is a proprietry TRADE SECRET, like all of the previously known KGs.
