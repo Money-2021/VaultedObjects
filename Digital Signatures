@@ -28,3 +28,26 @@ Detached JSONWebSignature.
     ]
   }
 }
+
+JwToken
+HEADER:ALGORITHM & TOKEN TYPE
+
+{
+  "alg": "HS256",
+  "typ": "JWT",
+  "kid": "284c347d1a30123a65cfc5920f8118ae8f37532e"
+}
+PAYLOAD:DATA
+
+{
+  "SecureIdentity": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+  "Type": "SignMe",
+  "jti": "5ecb78da-b3ba-4025-ade0-c7d923bdca65",
+  "role": "Sign",
+  "Tag": "NVDkJAMY1yjNi6et2J+ffgYdpt5jI1vAavpeW3SbOPdJdm4/1gpnJ5J2Zzv7xiqMgG/R8sZ5bHWghCRbtZxr9216hlR/aUeD",
+  "nbf": 1739139648,
+  "exp": 1739146560,
+  "iat": 1739139648,
+  "iss": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+  "aud": "https://vaultedobjects.azurewebsites.net"
+}
