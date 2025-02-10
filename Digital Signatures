@@ -49,5 +49,5 @@ PAYLOAD:DATA
   "exp": 1739146560,
   "iat": 1739139648,
   "iss": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
-  "aud": "https://vaultedobjects.azurewebsites.net"
+  "aud": "https://host.azurewebsites.net"
 }
