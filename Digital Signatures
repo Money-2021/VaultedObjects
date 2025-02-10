@@ -1,0 +1,30 @@
+The Vaulted Object framework, provides a post quantium secure digital signature set of funtions, using the ITS->KMS.
+
+Examples
+Detached JSONWebSignature.
+{
+  "JSONWebSignature": {
+    "objectId": "924cc5fa-4104-44f0-aac1-66c76412dda3",
+    "objectImprint": "JHh2YuPR3lUAyyHKl-x4bppsV83ZV5RBLjmYN5MYx-I",
+    "signatures": [
+      {
+        "header": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9",
+        "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjI4NGMzNDdkMWEzMDEyM2E2NWNmYzU5MjBmODExOGFlOGYzNzUzMmUifQ.eyJTZWN1cmVJZGVudGl0eSI6IjAxMDE2MzRjNTZlZGU5MGQ5YzA2YzkxMDdlNzJhMTZlMTc2OWY3NWM5MjJlIiwiVHlwZSI6IlNpZ25NZSIsImp0aSI6IjVlY2I3OGRhLWIzYmEtNDAyNS1hZGUwLWM3ZDkyM2JkY2E2NSIsInJvbGUiOiJTaWduIiwiVGFnIjoiTlZEa0pBTVkxeWpOaTZldDJKK2ZmZ1lkcHQ1akkxdkFhdnBlVzNTYk9QZEpkbTQvMWdwbko1SjJaenY3eGlxTWdHL1I4c1o1YkhXZ2hDUmJ0WnhyOTIxNmhsUi9hVWVEIiwibmJmIjoxNzM5MTM5NjQ4LCJleHAiOjE3MzkxNDY1NjAsImlhdCI6MTczOTEzOTY0OCwiaXNzIjoiMDEwMTYzNGM1NmVkZTkwZDljMDZjOTEwN2U3MmExNmUxNzY5Zjc1YzkyMmUiLCJhdWQiOiJodHRwczovL3ZhdWx0ZWRvYmplY3RzLmF6dXJld2Vic2l0ZXMubmV0In0.089Seq-tjOwTF-CYKUuUjrUks4rkprQqIBxwVInZMnc",
+        "role": "Sign",
+        "sin": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+        "commonname": "John Smith",
+        "timestamp": "2025-02-09T22:20:46.8302821Z",
+        "signature": "_eXh3vef8KYeLMlbcnrggXiwjVDAUQEn2uCU127XGH8"
+      },
+      {
+        "header": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9",
+        "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRmNGIwZTkxMDkzZjgxYTAyMzJkYmQ0MDJmMTJmMmY0NjRkNGMyYjMifQ.eyJTZWN1cmVJZGVudGl0eSI6IjAxMDE3ZjIyOWJmMDcwNmM4YTE2ZWE3YjQ1ZjFiYTg5MGE1MjIzMjBkMTRiIiwiVHlwZSI6IlNpZ25NZSIsImp0aSI6IjNiNTY1ZTUxLWI1YTItNDg2MS04OTkwLWRjNjI1NDA3YWVkZiIsInJvbGUiOiJTaWduIiwiVGFnIjoickIrNGhTZE1SUmN6ODBJNnJvbWRsMkdMamoxanpBNmRsd1QySHF0OGh4Q1dzSkc0VkNrcWV3WGJtSnNGbCtzWkZBVmlpT1RjZGMxdktabXVla1FIcWJ1MXFoMk1VVW1KIiwibmJmIjoxNzM5MTM5NjQ4LCJleHAiOjE3MzkxNDY1NjAsImlhdCI6MTczOTEzOTY0OCwiaXNzIjoiMDEwMTdmMjI5YmYwNzA2YzhhMTZlYTdiNDVmMWJhODkwYTUyMjMyMGQxNGIiLCJhdWQiOiJodHRwczovL3ZhdWx0ZWRvYmplY3RzLmF6dXJld2Vic2l0ZXMubmV0In0.033RLehqZUCeFv0N6ZegB6a6QcT78TlP5sdEjp9fjXg",
+        "role": "Witness",
+        "sin": "01017f229bf0706c8a16ea7b45f1ba890a522320d14b",
+        "countersignature": "0101634c56ede90d9c06c9107e72a16e1769f75c922e",
+        "timestamp": "2025-02-09T22:20:48.8235247Z",
+        "signature": "_eXh3vef8KYeLMlbcnrggXiwjVDAUQEn2uCU127XGH8"
+      }
+    ]
+  }
+}
