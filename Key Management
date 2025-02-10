@@ -19,10 +19,10 @@ KMS Principles
 3. All KG seed or keying material travels within a trusted path, and is protected to the same level as any generated key material.
 4. Within the KMS key material is never stored (ever) and always moves external to any key usage channel.
 5. There exist no centralised key storage of management system, all keys are generated or regenerated via decentralised KG process.
-6. All generated keys have a security policy which requires single usage or at most has an ephemeral existence for the duration of a the vaulting system.
+6. All generated keys have a security policy which requires single usage or at most has an ephemeral existence for the duration of a the vaulting funtion (milliseconds).
 7. All KG's domains are segregated via the use of domain specific universals, there exist no interoperability between KMS domains or KG's.
 8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys must not be an attack vector for any KMS.
-9. All key material is derived from a Quantum Random Numbers source.
+9. All key material is derived from a Quantum Random Numbers source, and no key is ever reused.
 10. There exist no HSM elements within the framework as they are not required to store keys.
  
 
