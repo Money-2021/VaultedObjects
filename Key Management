@@ -1,12 +1,12 @@
 Once the secrets of the algorithm’s implementation are discovered (as they often are), systems using these algorithms become vulnerable to attack. 
 That’s why, according to Kerckhoffs’s Principle, the only secret element of an encryption algorithm should be the key itself.
-The objectiuve of the Vaulted Object KMS is to provide as close to zero atatck surface as techncially and practiclaly possible today, while acknowledging that a zero risk system is imposable, and hence some degree of residual risk must always exist.
-The foundation of all Key Generation is a hardware based random source of enthropy, valuted object make use of a Quantum Random Number souce of entropy.
+The objectiuve of the Vaulted Object KMS is to provide as close to zero attack surface as techncially and practiclaly possible today, while acknowledging that a zero risk system is impossible, and hence some degree of residual risk must always exist.
+The foundation of all Key Generation is a hardware based random source of enthropy (TRNG), vaulted objects make use of a "Quantum Random Number" souce of entropy, and then generates secure crytographic keys.
 
-Encryption keys are a fundamental component of the security of cryptographic systems.In order to properly protect your encryption key, you’ll need a key management system.
-Key generation is the process of generating keys in cryptography. A key is used to encrypt and decrypt Vaulted Objects. A device or program used to generate keys is called a key generator or KG.
+Encryption keys are a fundamental component of the security of cryptographic systems.In order to properly protect your encryption key, you’ll need a Information Thretic Secure, key management system(KMS).
+Key generation is the process of generating secure crypyogrphic keys in cryptography. A key is used to encrypt and decrypt Vaulted Objects, but are never stored. A device or program used to generate keys is called a key generator or KG.
 
-The security of the Valuted Object KMS, code named Medley, is foundational to the security of the Vaulted Object framwork.
+The security of the Valuted Object KMS, code named Medley, is foundational to the security of the Vaulted Object framework.
 
 THE FRAMEWORK
 The valuted object KMS is a proprietry system protected as a Trade Secret, contained within a hardware protected trust zone.
