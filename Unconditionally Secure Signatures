@@ -1,0 +1,11 @@
+Digital signatures are one of the most important cryptographic primitives. 
+We have constructed an information-theoretically secure digital signature scheme which, unlike prior schemes, enjoys a number of advantageous properties such as short signature length and high generation efficiency, to name two. 
+In particular, we extend symmetric-key message authentication codes (MACs) based on universal hashing to make them transferable, a property absent from traditional MAC schemes. 
+
+We construct an unconditionally secure signature scheme which, unlike prior schemes, does not rely on a trusted third party or anonymous channels. We prove information-theoretic security of our scheme against forging, repudiation, and non-transferability.
+
+The main difference between an unconditionally secure message authentication code and an unconditionally secure signature scheme is that signature schemes ensure the transferability of signed content, while authentication codes do not.
+We propose a simple method, similar to secret sharing, allowing unconditionally secure authentication codes to be transformed into USS schemes. Our method requires only minimal trust assumptions and fewer resources than in previous USS schemes. 
+We do not assume a trusted authority, nor the existence of authenticated broadcast channels. Instead, we only require participants to share short secret keys pairwise, and that the majority of participants are honest.
+
+In our scheme, a sender shares with each of the remaining protocol participants (or recipients) a set of keys derived from a shared Key Generator(KG).
