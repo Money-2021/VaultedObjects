@@ -1,4 +1,6 @@
-
+/*
+  Please Use rdrand.dll
+ */
 // Test
 Main
 { 
