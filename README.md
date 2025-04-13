@@ -1,5 +1,9 @@
 Non-AI Licenses This repository contains templates for software and digital work licenses that restrict software and other work from being used in AI training datasets or AI or AI related or derived technologies.
 
+The Vaulted Object platform provides, an Information Theoretic Secure INFOSEC solution, while preventing the use of ITS encryption for COMSEC capabilities.
+Information security (InfoSec) is the protection of important information against unauthorized access, disclosure, use, alteration or disruption.
+
+
 Vaulted Objects Client
 
 This is the public domain SDK as a set of Visual Studio Unit test cases, which can be executed within Visual Studio, 
