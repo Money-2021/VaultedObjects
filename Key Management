@@ -10,7 +10,7 @@ The security of the Valuted Object KMS, code named Medley, is foundational to th
 
 THE FRAMEWORK
 The valuted object KMS is a proprietry system protected as a Trade Secret, contained within a hardware protected trust zone.
-The solution is quantium safe as a brute force attack on the KMS would thereticlaly take an infinate number of years and resources. For reference, the universe is currently about 1.38×10^10 years old.
+The solution is quantium safe as a brute force attack on the KMS would theoretically take an infinate number of years and resources. For reference, the universe is currently about 1.38×10^10 years old.
 
 KMS Principles
 
