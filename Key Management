@@ -25,6 +25,7 @@ KMS Principles
 9. All key material is derived from a Quantum Random Numbers source, and no key is ever reused.
 10. There exist no HSM elements within the framework as they are not required to store or process keys.
  
+The author(s) certifies, that to the best of their knowledge, this post contains publicly available, unclassified information only.
 
 Notes
 1. AES, all Public Ket and all Post quantium algorithm are NOT ITS ciphers and hence cannto be proven secure.
