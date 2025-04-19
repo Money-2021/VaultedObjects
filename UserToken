@@ -144,58 +144,61 @@
          
             return skey;
         }
-        public static string AddObject(string tokenPath, string sToken, string filename, byte[] objectbytes)
-        {
-            UserToken.RecoveryResponse rsp = UserToken.GetUserToken(tokenPath);
-            Uri _baseUri = new Uri(ExtractAudience(sToken));
+       public static string AddObject(string tokenPath, string sToken, string filename, byte[] objectbytes)
+{
+    UserToken.RecoveryResponse rsp = UserToken.GetUserToken(tokenPath);
+    Uri _baseUri = new Uri(ExtractAudience(sToken));
  
-            // Obtain Function JwToken
-            HttpClient _httpClient = new HttpClient();
-            // Build funtion endpoint Uri
-            string _relativeUrl = "Object/Add?filename="+ filename;
-            Uri _uri = new Uri(_baseUri, _relativeUrl);
-            _httpClient.BaseAddress = _baseUri;
-            // Add VaultMe Jwtoken
-            _httpClient.DefaultRequestHeaders.Add("x-token", sToken);
-            // Add User Counter
-            _httpClient.DefaultRequestHeaders.Add("x-counter", rsp.Counter.ToString());
-            // Encrypt Object 
-            byte[] pdata = AesProvider.Encrypt(rsp.share, objectbytes);
-             
-            // Add Vaulted object content in byte[] 
-            ByteArrayContent content = new ByteArrayContent(pdata);
-            // Get Vaulted Object Identifier response
-            HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                // GUID
-                string onjectId = response.Content.ReadAsStringAsync().Result;
-                return onjectId;    
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
-            {
-                // Sync issue detected -> resync
-                RecoveryResponse r = TokenRefresh(rsp);
-                rsp.jwToken = r.jwToken;
-                rsp.share = r.share; // Mandatory refresh
-                rsp.Counter = 1;
-                r.isProtected = false; // unprotected from refresh
-                // Save 
-                SaveUserToken(tokenPath, r);
+    // Obtain Function JwToken
+    HttpClient _httpClient = new HttpClient();
+    // Build funtion endpoint Uri
+    string _relativeUrl = "Object/Add?filename="+ filename;
+    Uri _uri = new Uri(_baseUri, _relativeUrl);
+    _httpClient.BaseAddress = _baseUri;
+    // Add VaultMe Jwtoken
+    _httpClient.DefaultRequestHeaders.Add("x-token", sToken);
+    // Add User Counter
+    _httpClient.DefaultRequestHeaders.Add("x-counter", rsp.Counter.ToString());
+    // Add Object Hash
+    _httpClient.DefaultRequestHeaders.Add("x-hash", Convert.ToBase64String(SHA256.Create().ComputeHash(objectbytes)));
 
-            }
-            else
-            {
-                // fail
-                string error = response.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(error))
-                {
-                    error = response.ReasonPhrase;
-                }
-                throw new Exception(error);
-            }
-            return String.Empty;
+    // Encrypt Object 
+    byte[] pdata = AesProvider.Encrypt(rsp.share, objectbytes);
+     
+    // Add Vaulted object content in byte[] 
+    ByteArrayContent content = new ByteArrayContent(pdata);
+    // Get Vaulted Object Identifier response
+    HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+    if (response.IsSuccessStatusCode)
+    {
+        // GUID
+        string onjectId = response.Content.ReadAsStringAsync().Result;
+        return onjectId;    
+    }
+    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+    {
+        // Sync issue detected -> resync
+        RecoveryResponse r = TokenRefresh(rsp);
+        rsp.jwToken = r.jwToken;
+        rsp.share = r.share; // Mandatory refresh
+        rsp.Counter = 1;
+        r.isProtected = false; // unprotected from refresh
+        // Save 
+        SaveUserToken(tokenPath, r);
+
+    }
+    else
+    {
+        // fail
+        string error = response.Content.ReadAsStringAsync().Result;
+        if (string.IsNullOrEmpty(error))
+        {
+            error = response.ReasonPhrase;
         }
+        throw new Exception(error);
+    }
+    return String.Empty;
+}
         public static RecoveryResponse GetUserToken(string userTokenPath)
         {
             string sToken = System.IO.File.ReadAllText(userTokenPath);
