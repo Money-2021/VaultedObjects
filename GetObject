@@ -34,9 +34,26 @@ public void TestMethod_get_object()
     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
     if (response.IsSuccessStatusCode)
     {
-        // Download via SAS Uri
-        string uri  = response.Content.ReadAsStringAsync().Result;
+          // Async download via SAS Uri
+    string uri = response.Content.ReadAsStringAsync().Result;
+    byte[]? objContent = UserToken.GetUrlContent(uri).Result;
+    if (objContent != null)
+    {
+        // Decrypt
+        byte[] data = AesProvider.Decrypt(r.share, objContent);
+    }
+    else
+    {
+        throw new Exception("Conent download error");
+    }
 
+}
+else
+{
+    // fail
+    string error = response.Content.ReadAsStringAsync().Result;
+    throw new Exception(error);
+}
     }
     else
     {
