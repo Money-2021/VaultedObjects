@@ -177,6 +177,8 @@
          HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
          if (response.IsSuccessStatusCode)
          {
+             // Increment Counter
+             IncrementCounter(tokenPath);
              // GUID
              string onjectId = response.Content.ReadAsStringAsync().Result;
              return onjectId;    
