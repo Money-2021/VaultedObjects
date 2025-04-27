@@ -63,3 +63,51 @@ else
     }
 
 }
+
+///
+/// This funtion retieves the ITS encrypted AESGCM encryptied object for local storage  purposes.
+
+ public void TestMethod_get_object_jwt()
+ {
+     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+     UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+
+      Guid id = new Guid("5f9d2937-5afe-4465-bd47-4a5cb8dfb4d7"); // Fill with Vaulted Object Identifier
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Object/Get?id=" + id;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Force jwt response
+     _httpClient.DefaultRequestHeaders.Add("x-type", "jwt");
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+     // Calc Auth Hash
+     string shash = id.ToString() + SecureIdentity;
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
+     string ssign = HmacProvider.SignHash(r.share, hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+     // Get Vaulted Object download URL
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // Astnc download via SAS Uri
+         string uri = response.Content.ReadAsStringAsync().Result;
+         byte[]? objContent = UserToken.GetUrlContent(uri).Result;
+         Debug.WriteLine(uri);
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
