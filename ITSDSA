@@ -1,0 +1,100 @@
+// ITSDA detached Signatures
+
+1. Sign existing Vaulted Object
+ public void TestMethod_sign()
+ {
+
+     // Load User Token
+     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+     string sToken = System.IO.File.ReadAllText(userTokenPath);
+     UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+
+     // Obtain SignMe token for this vaulting session
+     string signtMeToken = sign_me(userTokenPath);
+
+     string objectId = [add objectId]
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Sign/SignObject?objectId=" + objectId;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Force jwt response
+     _httpClient.DefaultRequestHeaders.Add("x-type", "jwt");
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", signtMeToken);
+     // Calc Auth Hash
+     string shash = objectId.ToString() + SecureIdentity;
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
+     string ssign = HmacProvider.SignHash(r.share, hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // detached ITSDSA signature
+         string signed = response.Content.ReadAsStringAsync().Result;
+         userTokenPath = @"D:\Examples\VO\SignedObject-" + objectId + ".jwt";
+         System.IO.File.WriteAllText(userTokenPath, signed);
+
+         Debug.WriteLine(signed);
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
+2. Sign Object Content, no existing vaulted Object required.
+TBD..
+
+// Support
+ private string sign_me(string userTokenPath)
+ {
+     UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+     string userToken = r.jwToken;
+
+     // Extract endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Obtain Function JwToken
+     HttpClient _httpClient = new HttpClient();
+     // Build funtion endpoint Uri
+     string _relativeUrl = "Sign/SignMe?role=Sign";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+
+     // Get response
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+
+         Stream receiveStream = response.Content.ReadAsStream();
+         StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
+         string jwToken = reader.ReadToEnd();
+         return jwToken;
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         if (string.IsNullOrEmpty(error))
+         {
+             error = response.ReasonPhrase;
+         }
+         throw new Exception(error);
+     }
+
+ }
