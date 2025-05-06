@@ -110,7 +110,10 @@
 
      // Load User Token
      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-    
+     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+     string sToken = System.IO.File.ReadAllText(userTokenPath);
+     UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+
      string objectId = [add Guid];
      userTokenPath = @"D:\Examples\VO\SignedObject-" + objectId + ".jwt";
      byte[] signed = System.IO.File.ReadAllBytes(userTokenPath);
