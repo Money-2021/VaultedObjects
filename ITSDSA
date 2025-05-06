@@ -104,6 +104,46 @@
      }
 
  }
+3. Extarct ObjectHash 
+ public void TestMethod_sign_extract()
+ {
+
+     // Load User Token
+     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+    
+     string objectId = [add Guid];
+     userTokenPath = @"D:\Examples\VO\SignedObject-" + objectId + ".jwt";
+     byte[] signed = System.IO.File.ReadAllBytes(userTokenPath);
+
+     ByteArrayContent content = new ByteArrayContent(signed);
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Sign/Extract?sin=" + SecureIdentity;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+      
+     HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+     if (response.IsSuccessStatusCode)
+     {
+        
+        string sig = response.Content.ReadAsStringAsync().Result;
+        byte[] hash = Convert.FromBase64String(sig);
+        
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
 
 // Support
  private string sign_me(string userTokenPath)
