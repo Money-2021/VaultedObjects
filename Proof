@@ -1,0 +1,11 @@
+ITS Proof
+
+1. P(M = mIC = c) = P(M = m) i.e. seeing a ciphertext doesn't give you any extra information about the plaintext. The probability of seeing a message m after the ciphertext has been observed is the same as the probability of the message without the ciphertext.
+2. P(C = cIM = mo) = P(C = cIM = mt ) i.e. the probability of ciphertext c is equally likely for 2 different messages. 
+3. The key is as long as the message and a key should be used uniquely with a probability 1/IKI where IKI is the key space. 
+Pr[M=m;C=c]=Pr[M=m] 
+
+The knowledge of the Cyphertext is not helpful at all!
+The result is independent of the capability of any attacker or computational resources.
+The Vernam Cipher as implemented above is provably secure against all attacks.
+
