@@ -10,6 +10,6 @@ The result is independent of the capability of any attacker or computational res
 The Vernam Cipher as implemented above is provably secure against all attacks.
 
 Malleability
-Yet another issue has to be considered, namely the message authentication, which is not usually implemented in one-time pads.
+Yet another issue has to be considered, namely the message authentication, which is not usually implemented in Vernam Ciphers.
 Malleability is common to all stream ciphers (Hanaoka, 2008). Also, the XOR operator is vulnerable to a known-plaintext attack, since XOR (plaintext, ciphertext) = key.
 The ITS solution has a propriewtry athentication algorthim which addresses theis known issue.
