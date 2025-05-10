@@ -330,7 +330,7 @@
          // Obtain Function JwToken
          HttpClient _httpClient = new HttpClient();
          // Build funtion endpoint Uri
-         string _relativeUrl = "User/TokenRefresh";
+         string _relativeUrl = "User/Refresh";
          Uri _uri = new Uri(_baseUri, _relativeUrl);
          _httpClient.BaseAddress = _baseUri;
          // Add User Jwtoken
