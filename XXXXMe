@@ -49,3 +49,51 @@ b) If required a call may be made for each AddObject, depending on the risk user
      }
 
  }
+ // SIGNME
+  private string sign_me(string userTokenPath)
+  {
+      UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+      string userToken = r.jwToken;
+
+      // Extract endpoint from User Token
+      var securityToken = new JwtSecurityToken(r.jwToken);
+      Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+      //_baseUri = new Uri("http://localhost:54718/");
+
+      // Obtain Function JwToken
+      HttpClient _httpClient = new HttpClient();
+      // Build funtion endpoint Uri
+      string _relativeUrl = "Sign/SignMe?role=Sign";
+      Uri _uri = new Uri(_baseUri, _relativeUrl);
+      _httpClient.BaseAddress = _baseUri;
+
+      // Add User Jwtoken
+      _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+      // Add signature
+      byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(r.jwToken));
+      string ssign = HmacProvider.SignHash(r.share, hashBytes);
+      _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+
+      // Get response
+      HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+      if (response.IsSuccessStatusCode)
+      {
+
+          Stream receiveStream = response.Content.ReadAsStream();
+          StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
+          string jwToken = reader.ReadToEnd();
+          return jwToken;
+      }
+      else
+      {
+          // fail
+          string error = response.Content.ReadAsStringAsync().Result;
+          if (string.IsNullOrEmpty(error))
+          {
+              error = response.ReasonPhrase;
+          }
+          throw new Exception(error);
+      }
+
+  }
+
