@@ -22,7 +22,11 @@ b) If required a call may be made for each AddObject, depending on the risk user
 
      // Add User Jwtoken
      _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
-
+     // Add signature
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(r.jwToken));
+     string ssign = HmacProvider.SignHash(r.share, hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+ 
      // Get response
      HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
      if (response.IsSuccessStatusCode)
