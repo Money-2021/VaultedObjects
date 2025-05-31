@@ -18,3 +18,6 @@ Lastley Keys
 Cryptographic keys should generally be generated secretly and uniformly at random in the cryptosystem's key domain; that is in the set of valid keys for the cryptosystem. What makes a key valid depends on the cryptosystem and often parameters (typically including key size).
 Since the adversary may know how our system works (Kerckhoffs's principle), we need to find a way to generate keys that don't only depend on a deterministic computation (which the adversary could reproduce). Therefore, all keys must depend on something that the adversary does not know. Such a thing is called a “true” random value.
 The proprietary KMS-Medley Key generator (KG) takes a TRNG seed and produces a secure cryptographic normalised True Random Number Generator (TRNG) key,  with a uniform distribution, meaning each bit in the key sequence is equally likely to occur. 
+
+Notes
+1. The Medly Key Generation Cipher, is designed to remove the need for reciptical lists (Bellaso table), as used within the NSA DIANA cipher (Bellaso + Vernam = DIANA). 
