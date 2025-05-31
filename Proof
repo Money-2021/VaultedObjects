@@ -22,4 +22,4 @@ The proprietary KMS-Medley Key generator (KG) takes a TRNG seed and produces a s
 Notes
 1. The Medly Key Generation Cipher, is designed to remove the need for reciptical lists (Bellaso table), as used within the NSA DIANA cipher (Bellaso + Vernam = DIANA). 
 2. The Medly  Key Generation Cipher is provably immune from all forms of atatck vectors as all keys are propvably secure. 
-3. Medley cipher is essential the XOR of two TRNG key streams.
+3. Medley cipher is essential the XOR (vernam cipher) of two TRNG key streams.
