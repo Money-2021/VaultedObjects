@@ -1,5 +1,5 @@
 // ITSDA detached Signatures
-Using an ITS shared secret instead of using digital signatures with asymmetric cryptography, ensure ITSDSAA signatures are Information Theoretic Secure.
+Using an ITS shared secret instead of using digital signatures with asymmetric cryptography, ensure ITSDA signatures are Information Theoretic Secure.
 It trades off the need for a complex public key infrastructure by delegating the key exchange to the communicating parties, 
 who are responsible for establishing and using a trusted channel (ITSKMS) to agree on the key prior to communication.
 
