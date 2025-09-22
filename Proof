@@ -16,7 +16,8 @@ Active attackers can also modify messages in transit, a weakness shared with all
 The ITS solution adds a propriewtry athentication to each key (ssek) to addresses these well known issue.
 
 Lastley Keys
-Cryptographic keys should generally be generated secretly and uniformly at random in the cryptosystem's key domain; that is in the set of valid keys for the cryptosystem. What makes a key valid depends on the cryptosystem and often parameters (typically including key size).
+Kerckhoffs's principle, holds that a cryptosystem should be secure, even if everything about the system, except the key, is public knowledge. 
+Thus, cryptographic keys should generally be generated secretly and uniformly at random in the cryptosystem's key domain; that is in the set of valid keys for the cryptosystem. What makes a key valid depends on the cryptosystem and often parameters (typically including key size).
 Since the adversary may know how our system works (Kerckhoffs's principle), we need to find a way to generate keys that don't only depend on a deterministic computation (which the adversary could reproduce). Therefore, all keys must depend on something that the adversary does not know. Such a thing is called a “true” random value.
 The proprietary KMS-Medley Key generator (KG) takes a QRNG (TRNG) seed and produces a secure cryptographic normalised secure key, with a uniform distribution, meaning each bit in the key sequence is equally likely to occur. 
 Medley is based upon a proprietry KG, whcih generates a key stream upon demand, the KG TRNG seed is never stored, and has a secure ephemerial (one time) existance.
