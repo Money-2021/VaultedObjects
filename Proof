@@ -20,7 +20,7 @@ Cryptographic keys should generally be generated secretly and uniformly at rando
 Since the adversary may know how our system works (Kerckhoffs's principle), we need to find a way to generate keys that don't only depend on a deterministic computation (which the adversary could reproduce). Therefore, all keys must depend on something that the adversary does not know. Such a thing is called a “true” random value.
 The proprietary KMS-Medley Key generator (KG) takes a TRNG seed and produces a secure cryptographic normalised True Random Number Generator (TRNG) key,  with a uniform distribution, meaning each bit in the key sequence is equally likely to occur. 
 Medley is based upon a proprietry KG, whcih generates a key stream upon demand, the KG TRNG seed is never stored, and has a secure ephemerial (one time) existance.
-Medley supports user defined universals to enable the creation of arbitary key domains to suit a wide range of operational deployments of an ITS-KMS.
+Medley supports user defined KG-universals to enable the creation of arbitary key domains to suit a wide range of operational deployments of an ITS-KMS.
 
 Conclusion 
 The Medley ITS-KMS creats a pairwise, infinate length, identical secure key stream (all bits os the key have equal propablity) between two secure Identoity end points according to this proof.
