@@ -1,4 +1,4 @@
-The ITS Proof,for KMS-Medle,is based upon imformation theory:
+The ITS Proof,for KMS-Medly,is based upon imformation theory:
 
 1. P(M = mIC = c) = P(M = m) i.e. seeing a ciphertext doesn't give you any extra information about the plaintext. The probability of seeing a message m after the ciphertext has been observed is the same as the probability of the message without the ciphertext.
 2. P(C = cIM = mo) = P(C = cIM = mt ) i.e. the probability of ciphertext c is equally likely for 2 different messages. 
@@ -13,7 +13,7 @@ Malleability and active attack vectors
 Yet another issue has to be considered, namely the message authentication, which is not usually implemented in Vernam Ciphers.
 Malleability is common to all stream ciphers (Hanaoka, 2008). Also, the XOR operator is vulnerable to a known-plaintext attack, since XOR (plaintext, ciphertext) = key.
 Active attackers can also modify messages in transit, a weakness shared with all stream ciphers.
-The ITS solution adds a propriewtry athentication to each key (seed) to addresses these well known issues.
+The Medly solution adds a propriewtry athentication to each key (seed) to addresses these well known issues.
 
 Lastley Keys
 Kerckhoffs's principle, holds that a cryptosystem should be secure, even if everything about the system, except the key, is public knowledge. 
