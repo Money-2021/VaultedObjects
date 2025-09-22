@@ -9,10 +9,11 @@ The knowledge of the Cyphertext is not helpful at all!
 The result is independent of the capability of any attacker or computational resources.
 The Vernam Cipher as implemented above is provably secure against all attacks.
 
-Malleability
+Malleability and active attack vectors
 Yet another issue has to be considered, namely the message authentication, which is not usually implemented in Vernam Ciphers.
 Malleability is common to all stream ciphers (Hanaoka, 2008). Also, the XOR operator is vulnerable to a known-plaintext attack, since XOR (plaintext, ciphertext) = key.
-The ITS solution has a propriewtry athentication algorthim which addresses theis known issue.
+Active attackers modify messages in transit, a weakness shared with other stream ciphers.
+The ITS solution adds a propriewtry athentication to each key to addresses these well known issue.
 
 Lastley Keys
 Cryptographic keys should generally be generated secretly and uniformly at random in the cryptosystem's key domain; that is in the set of valid keys for the cryptosystem. What makes a key valid depends on the cryptosystem and often parameters (typically including key size).
