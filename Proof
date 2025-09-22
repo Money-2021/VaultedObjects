@@ -27,10 +27,9 @@ Conclusion
 The Medley ITS-KMS creats a pairwise, infinate length, identical secure key stream (all bits os the key have equal propablity) between two secure Identoity end points according to this proof.
 
 Notes
-1. The Medly Key Generation Cipher, is designed to remove the need for reciptical lists (Bellaso table), as used within the NSA DIANA cipher (Bellaso + Vernam = DIANA). 
-2. The Medly  Key Generation Cipher is provably immune from all forms of atatck vectors as all keys are propvably secure. 
-3. Medley cipher is essential the XOR (vernam cipher) of two TRNG key streams.
-4. Quantium Ket Distribution (QKD) self deprecates as  within QKD, both participating parties need a) the physical devices, b) a connection between those that allows to run QKD, and 
+1. The Medly  Key Generation Cipher is provably immune from all forms of atatck vectors as all keys are propvably secure. 
+2. Medley cipher is essential the XOR (vernam cipher) of two TRNG key streams.
+3. Quantium Ket Distribution (QKD) self deprecates as  within QKD, both participating parties need a) the physical devices, b) a connection between those that allows to run QKD, and 
 c) still some authentication method which either requires a shared secret or some complexity-theoretically secure signature scheme. In short in QKD the two parties have to know each other 
 before communicating and pre-stage shared data first. This defeats the purpose of QKD itself.
 
