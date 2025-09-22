@@ -1,4 +1,4 @@
-The ITS Proof,for KMS-Medly,is based upon imformation theory:
+The ITS Proof,for Medly-KMS,is based upon imformation theory:
 
 1. P(M = mIC = c) = P(M = m) i.e. seeing a ciphertext doesn't give you any extra information about the plaintext. The probability of seeing a message m after the ciphertext has been observed is the same as the probability of the message without the ciphertext.
 2. P(C = cIM = mo) = P(C = cIM = mt ) i.e. the probability of ciphertext c is equally likely for 2 different messages. 
