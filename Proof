@@ -1,4 +1,4 @@
-ITS Proof including KMS-Medley...
+)ITS Proof including KMS-Medley...
 
 1. P(M = mIC = c) = P(M = m) i.e. seeing a ciphertext doesn't give you any extra information about the plaintext. The probability of seeing a message m after the ciphertext has been observed is the same as the probability of the message without the ciphertext.
 2. P(C = cIM = mo) = P(C = cIM = mt ) i.e. the probability of ciphertext c is equally likely for 2 different messages. 
@@ -13,12 +13,13 @@ Malleability and active attack vectors
 Yet another issue has to be considered, namely the message authentication, which is not usually implemented in Vernam Ciphers.
 Malleability is common to all stream ciphers (Hanaoka, 2008). Also, the XOR operator is vulnerable to a known-plaintext attack, since XOR (plaintext, ciphertext) = key.
 Active attackers can also modify messages in transit, a weakness shared with all stream ciphers.
-The ITS solution adds a propriewtry athentication to each key to addresses these well known issue.
+The ITS solution adds a propriewtry athentication to each key (ssek) to addresses these well known issue.
 
 Lastley Keys
 Cryptographic keys should generally be generated secretly and uniformly at random in the cryptosystem's key domain; that is in the set of valid keys for the cryptosystem. What makes a key valid depends on the cryptosystem and often parameters (typically including key size).
 Since the adversary may know how our system works (Kerckhoffs's principle), we need to find a way to generate keys that don't only depend on a deterministic computation (which the adversary could reproduce). Therefore, all keys must depend on something that the adversary does not know. Such a thing is called a “true” random value.
 The proprietary KMS-Medley Key generator (KG) takes a TRNG seed and produces a secure cryptographic normalised True Random Number Generator (TRNG) key,  with a uniform distribution, meaning each bit in the key sequence is equally likely to occur. 
+Medley is based upon a proprietry KG, whcih generates a key stream upon demand, the KG TRNG seed is never stored, and has a secure ephemerial (one time) existance.
 
 Conclusion 
 The Medley ITS-KMS creats a pairwise, infinate length, identical secure key stream (all bits os the key have equal propablity) between two secure Identoity end points according to this proof.
