@@ -9,8 +9,8 @@ The knowledge of the Cyphertext is not helpful at all!
 The result is independent of the capability of any attacker or computational resources.
 The Vernam Cipher as implemented above is provably secure against all attacks.
 
-The above proof requres a "cryptographically secure" bit stream generation (CSRBG),in order to implement a truly secure one-time pad. The Medley Key Generator(KG) is one such example of a secure CSRBG. 
-It should be noted that a CSRBG cannot be computed solevey from a TRNG seed, as this would produce a CSPRNG key, whcih would not meet the requireemnbst of the above proof.
+The above proof requres a "cryptographically secure" bit stream (CSRBG) as the proof only works at the bit level, in order to implement a truly secure one-time pad. The Medley Key Generator(KG) is one such example of a secure CSRBG. 
+It should be noted that a CSRBG cannot be computed soley from a TRNG seed, as this would produce a CSPRNG key, which would not meet the requireemnbst of the above proof.
 
 Malleability and active attack vectors
 Yet another issue has to be considered, namely the message authentication, which is not usually implemented in Vernam Ciphers.
