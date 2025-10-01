@@ -1,14 +1,14 @@
- [TestMethod]
- public void TestMethod_add_object()
- {
+  [TestMethod]
+  public void TestMethod_add_object()
+  {
 
-     // Load User Token
-     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
-     string sToken = System.IO.File.ReadAllText(userTokenPath);
+      // Load User Token
+      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+      string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+      string sToken = System.IO.File.ReadAllText(userTokenPath);
 
-     // Obtain VaultMe token for this vaulting session
-     string vaultMeToken = vault_me(userTokenPath);
-  
-     UserToken.AddObject(userTokenPath, vaultMeToken, "test.txt", Encoding.UTF8.GetBytes("This is test content"));
- }
+      // Obtain VaultMe token for this vaulting session
+      string vaultMeToken = vault_me(userTokenPath);
+   
+      UserToken.AddObject(userTokenPath, vaultMeToken, "test.txt", Encoding.UTF8.GetBytes("This is test content"));
+  }
