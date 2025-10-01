@@ -1,104 +1,43 @@
 This function provides a digital certificate of the proof of existance of a Vaulted Object within a specific space-time context.
-[TestMethod]
- [TestMethod]
- public void TestMethod_certify_object()
- {
-     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
-     string sToken = System.IO.File.ReadAllText(userTokenPath);
-     RecoveryResponse r = System.Text.Json.JsonSerializer.Deserialize<RecoveryResponse>(sToken);
-
-     string objectId = "b1c88ed4-ac0e-4f27-8549-c5fc9318bcd9"; // Fill with Vaulted Object Identifier from addObject response.
-
-     // Extract Function endpoint from User Token
-     var securityToken = new JwtSecurityToken(r.jwToken);
-     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
-     //_baseUri = new Uri("http://localhost:54718/");
-     // Obtain JwToken
-     HttpClient _httpClient = new HttpClient();
-     // Build funtion endpoint Uri
-     string _relativeUrl = "Object/Certify?objectId=" + objectId;
-     Uri _uri = new Uri(_baseUri, _relativeUrl);
-     _httpClient.BaseAddress = _baseUri;
-
-     // Add VaultMe Jwtoken
-     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
-
-     // Get Vaulted Object Identifier response
-     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
-     if (response.IsSuccessStatusCode)
-     {
-         // Download proof of existance certificate
-         string certificate = response.Content.ReadAsStringAsync().Result;
-         string spath = @"D:\Examples\VO\Certificate-" + SecureIdentity + ".json";
-         System.IO.File.WriteAllText(spath, certificate);
-     }
-     else
-     {
-         // fail
-         string error = response.Content.ReadAsStringAsync().Result;
-         throw new Exception(error);
-     }
-
- }
-
-// 2. Validate Response
-[TestMethod]
-public void Admin_certificate_proof()
-{
+  [TestMethod]
+  public void TestMethod_certify_object()
+  {
       string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-      string spath = @"D:\Examples\VO\Certificate-" + SecureIdentity + ".json";
-      string json = System.IO.File.ReadAllText(spath);
+      string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+      string sToken = System.IO.File.ReadAllText(userTokenPath);
+      RecoveryResponse r = System.Text.Json.JsonSerializer.Deserialize<RecoveryResponse>(sToken);
 
-      string s =  System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("objectImprint").ToString();
-      byte[] ObjectImprint = HexEncoder.Decode(s);
-      s = System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("merkleRoot").ToString();
-      byte[] MerkleRoot = HexEncoder.Decode(s);
-      string proof = System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("merkleProof").ToString();
+      string objectId = "b1c88ed4-ac0e-4f27-8549-c5fc9318bcd9"; // Fill with Vaulted Object Identifier from addObject response.
+      objectId = ObjectStoreDB.List(SecureIdentity).LastOrDefault().ObjectId;
 
-      bool bResult = ValidateProof(ObjectImprint, MerkleRoot, proof);
+      // Extract Function endpoint from User Token
+      var securityToken = new JwtSecurityToken(r.jwToken);
+      Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+      //_baseUri = new Uri("http://localhost:54718/");
+      // Obtain JwToken
+      HttpClient _httpClient = new HttpClient();
+      // Build funtion endpoint Uri
+      string _relativeUrl = "Object/Certify?objectId=" + objectId;
+      Uri _uri = new Uri(_baseUri, _relativeUrl);
+      _httpClient.BaseAddress = _baseUri;
 
-}
-public static bool ValidateProof(byte[] objectImprint,byte[] merkleRoot, string merkleProof )
-{
-    // Deserialise proof
-    Dictionary<string, string>[] values = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>[]>(merkleProof);
-    // Load Proof for this Object
-    MerkleTools.Proof e = new MerkleTools.Proof(objectImprint, merkleRoot, SHA256.Create());
-    foreach (Dictionary<string, string> value in values)
-    {
-        if (value.ContainsKey("right"))
-            e.AddRight(Hex.HexToBytes(value.Values.First()));
-        else
-            e.AddLeft(Hex.HexToBytes(value.Values.First()));
-    }
-    // Validate Coin Hash value exists in Supply via the Coin Merkle Proof
-    bool bResult = e.Validate();
-    return bResult;
-}
+      // Add VaultMe Jwtoken
+      _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
 
-// 3. Example
-{
-  "context": "1.3.6.1.4.1.3220.1.1.6",
-  "type": "SHA256",
-  "objectId": "eaa68a91-7b83-4f4a-81ec-fdde6d67d33d",
-  "fileName": "Test.txt",
-  "ts": "2024-11-11T22:21:15",
-  "objectImprint": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
-  "extracted": "True",
-  "extractedDate": "2024-11-11T23:35:02",
-  "targetHash": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957",
-  "merkleRoot": "1915d09f733cbdde65ffb3b4df4b54038b7928879efbe7a264f54d62ba65e430",
-  "validated": "True",
-  "latitude": "-33.8660",
-  "longitude": "151.2094",
-  "tick": "1731363675",
-  "anchorIdentity": "01013412f76c8ef52099cbd1ad2b00c1a45eda2e8e56",
-  "anchorTickId": "1",
-  "anchorTick": "1731364275",
-  "merkleProof": [
-    {
-      "Right": "01e44cd59b2c0e8acbb99647d579f74f91bde66e4a243dc212a3c8e8739c9957"
-    }
-  ]
-}
+      // Get Vaulted Object Identifier response
+      HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+      if (response.IsSuccessStatusCode)
+      {
+          // Download proof of existance certificate
+          string certificate = response.Content.ReadAsStringAsync().Result;
+          string spath = @"D:\Examples\VO\Certificate-" + SecureIdentity + ".json";
+          System.IO.File.WriteAllText(spath, certificate);
+      }
+      else
+      {
+          // fail
+          string error = response.Content.ReadAsStringAsync().Result;
+          throw new Exception(error);
+      }
+
+  }
