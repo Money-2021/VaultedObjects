@@ -8,7 +8,7 @@ This function provides a digital certificate of the proof of existance of a Vaul
       RecoveryResponse r = System.Text.Json.JsonSerializer.Deserialize<RecoveryResponse>(sToken);
 
       string objectId = "b1c88ed4-ac0e-4f27-8549-c5fc9318bcd9"; // Fill with Vaulted Object Identifier from addObject response.
-      objectId = ObjectStoreDB.List(SecureIdentity).LastOrDefault().ObjectId;
+      objectId = <objctId>
 
       // Extract Function endpoint from User Token
       var securityToken = new JwtSecurityToken(r.jwToken);
