@@ -6,7 +6,7 @@ public void TestMethod_get_object()
     UserToken.RecoveryResponse r =  UserToken.GetUserToken(userTokenPath);
 
     Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
-    string objectId  = ObjectStoreDB.List(SecureIdentity).FirstOrDefault().ObjectId;
+    string objectId  = <objectid>;
     id = new Guid(objectId);
 
 
@@ -68,7 +68,7 @@ public void TestMethod_get_object()
       UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
 
       Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
-      string objectId = ObjectStoreDB.List(SecureIdentity).FirstOrDefault().ObjectId;
+      string objectId = <objectid>
       id = new Guid(objectId);
 
 
