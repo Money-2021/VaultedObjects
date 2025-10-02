@@ -1,4 +1,4 @@
-This demonstrates a common Valuting orld flow, for any user applciations
+This demonstrates a common Vaulting work flow, for any user applciations
 
 [TestMethod]
 public void TestMethod_execute()
