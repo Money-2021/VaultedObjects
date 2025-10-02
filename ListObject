@@ -1,0 +1,41 @@
+ [TestMethod]
+ public void TestMethod_list_object()
+ {
+     string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
+     string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
+     UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+
+  
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Object/List";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+      // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+     // Get Vaulted Object List download URL
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // Astnc download via SAS Uri
+         string uri = response.Content.ReadAsStringAsync().Result;
+         byte[]? objContent = UserToken.GetUrlContent(uri).Result;
+         userTokenPath = @"D:\Examples\VO\ObjectList-" + SecureIdentity + ".json";
+         System.IO.File.WriteAllBytes(userTokenPath, objContent);
+
+         Debug.WriteLine(uri);
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
