@@ -2,5 +2,6 @@ General Secureity Rules for Vaulted Object End systems
 1. VaultMe Tokens must never be store, as temporal and should be keep in memory.
 2. Share should be protected via an account segregated Data Ptotection API (OS enforced).
 3. Counter should be stored via an account segregated Data Ptotection API (OS enforced).
+4. Device split should be stored via an account segregated Data Ptotection API (OS enforced).
 4. As device<->host communication is AESGCM device protected, the VO must be immediatley decrypted upon receipt, as share has a session crypto period.
 5. Vaulted Objects once valul;ted cannot be removed from a VO, as all get Object requests return a "digital original" of the previously VO content.
