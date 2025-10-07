@@ -32,6 +32,7 @@ The Medley (ITS-KMS) creates a pairwise, infinate length, identical secure bit s
 Notes
 1. Medly is a pair-wise, cooperative key generation scheme, the Key Generation Cipher is provably (above) immune from all forms of attack vectors, as the CSBRND keys are crypyographically secure. 
 2. Medley cipher, at an abstract level, is essential the XOR (vernam cipher) of two corperatly generated TRNG bit streams.
+3. The Medley protocol produces a set of Medley Vectors, these engangle the Key Generators to produce an identical CSBRND bit stream (of potentially infinite length).
 3. Quantium Key Distribution (QKD) self deprecates as  within QKD, both participating parties need a) the physical devices, b) a connection between those that allows to run QKD, and 
 c) still some authentication method which either requires a shared secret or some complexity-theoretically secure signature scheme. In short in QKD the two parties have to know each other 
 before communicating and pre-stage shared data first. This defeats the purpose of QKD itself.
