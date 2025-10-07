@@ -27,7 +27,7 @@ Medley is based upon a proprietry KG, whcih generates a key stream upon demand, 
 Medley supports user defined KG-universals to enable the creation of arbitary key domains to suit a wide range of operational deployments of an ITS-KMS.
 
 Conclusion 
-The Medley ITS-KMS creats a pairwise, infinate length, identical secure key stream (all bits of the key have equal propablity) between two secure Identoity end points according to this proof.
+The Medley (ITS-KMS) creates a pairwise, infinate length, identical secure bit stream (all bits of the key have equal propablity) between two secure Identites (end points) according to this proof.
 
 Notes
 1. Medly is a pair-wise, cooperative key generation scheme, the Key Generation Cipher is provably (above) immune from all forms of attack vectors, as the CSBRND keys are crypyographically secure. 
