@@ -8,6 +8,7 @@ c) Successful read will any delete existing msg.
 d) All sent and rec msgs are encrypted to SecureIdentity clients over TLS.
 */
 
+/// Send Msg
  [TestMethod]
  public void TestMethod_msg_send()
  {
@@ -50,7 +51,7 @@ d) All sent and rec msgs are encrypted to SecureIdentity clients over TLS.
 
 
  }
-
+// Recieve Msg
  [TestMethod]
  public void TestMethod_msg_rec()
  {
