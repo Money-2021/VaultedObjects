@@ -77,9 +77,9 @@ d) All sent and rec msgs are encrypted to SecureIdentity clients over TLS.
      if (response.IsSuccessStatusCode)
      {
 
-         byte[] cipherContent = response.Content.ReadAsByteArrayAsync().Result;
+         byte[] cipherContent = response.Content.ReadAsByteArrayAsync().Result;   
          // Decrypt msg 
-         byte[] data = AesProvider.Decrypt(rsp.share, cipherContent);
+         UserToken.Download dload = UserToken.DecryptMsg(rsp.share, cipherContent);
      }
      else
      {
