@@ -115,14 +115,32 @@
  }
  public class UserToken
  {
+    public class Msg
+    {
+     public byte[] cnt { get; set; }
+     public string mimetype { get; set; }
+     public string filename { get; set; }
+     public string subject { get; set; }
+     public Msg()
+     {
+ 
+     }
+    public Msg(byte[] cnt, string mimetype, string filename, string subject)
+    {
+        this.cnt = cnt;
+        this.mimetype = mimetype;
+        this.filename = filename;
+        this.subject = subject;
+    }
+    public byte[] ToBytes()
+    {
+        string sbody = System.Text.Json.JsonSerializer.Serialize(this);
+        return Encoding.UTF8.GetBytes(sbody);
+    }
+}
      public class RecoveryResponse
      {
-         public class Download
-         {
-             public byte[] cnt { get; set; }
-             public string filename { get; set; }
-        
-         }
+         
          public RecoveryResponse()
          {
          }
@@ -156,10 +174,10 @@
          Dictionary<string, string> dString = payLoad.ToDictionary(k => k.Key, k => k.Value == null ? "" : k.Value.ToString());
          return dString;
      }
-     public static Download DecryptMsg(byte[] share, byte[] cipherText)
+      public static Msg DecryptMsg(byte[] share, byte[] cipherText)
      {
-        byte[] data = AesProvider.Decrypt(share, cipherText);
-        return JsonSerializer.Deserialize<Download>(data);
+         byte[] data = AesProvider.Decrypt(share, cipherText);
+         return JsonSerializer.Deserialize<Msg>(data);
      }
      private static string ExtractAudience(string token)
      {
