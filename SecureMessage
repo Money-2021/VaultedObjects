@@ -1,0 +1,86 @@
+/*
+ITS Secure Messageing with ITSDSA256 Signatures
+Mesage size limited to 20 MB.
+*/
+
+ [TestMethod]
+ public void TestMethod_msg_send()
+ {
+     string sin = Environment.GetEnvironmentVariable("TestA");
+     string userTokenPath = @"D:\Examples\VO\Token-" + sin + ".jwt";
+     UserToken.RecoveryResponse rsp = UserToken.GetUserToken(userTokenPath);
+    
+     byte[] c = Encoding.UTF8.GetBytes("Test");
+     byte[] pdata = AesProvider.Encrypt(rsp.share, c);
+     ByteArrayContent content = new ByteArrayContent(pdata);
+     string rec_sin = Environment.GetEnvironmentVariable("TestB");
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(rsp.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "SecureMessage/Send?recipient=" +rec_sin;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", rsp.jwToken);
+  
+     // 
+     HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+     if (response.IsSuccessStatusCode)
+     {
+
+      // All good
+
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+
+ }
+
+ [TestMethod]
+ public void TestMethod_msg_rec()
+ {
+     string sin = Environment.GetEnvironmentVariable("TestB");
+     string userTokenPath = @"D:\Examples\VO\Token-" + sin + ".jwt";
+     UserToken.RecoveryResponse rsp = UserToken.GetUserToken(userTokenPath);
+ 
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(rsp.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:54718/");
+
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "SecureMessage/Rec";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", rsp.jwToken);
+
+     // 
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+
+         byte[] cipherContent = response.Content.ReadAsByteArrayAsync().Result;
+         // Decrypt msg 
+         byte[] data = AesProvider.Decrypt(rsp.share, cipherContent);
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+
+ }
