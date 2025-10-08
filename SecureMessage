@@ -16,9 +16,13 @@ d) All sent and rec msgs are encrypted to SecureIdentity clients over TLS.
      string userTokenPath = @"D:\Examples\VO\Token-" + sin + ".jwt";
      UserToken.RecoveryResponse rsp = UserToken.GetUserToken(userTokenPath);
     
+      UserToken.Msg msg = new UserToken.Msg();
+
      byte[] c = Encoding.UTF8.GetBytes("Test");
-     byte[] pdata = AesProvider.Encrypt(rsp.share, c);
-     ByteArrayContent content = new ByteArrayContent(pdata);
+     msg.cnt = AesProvider.Encrypt(rsp.share, c);
+     msg.subject = "Test";
+     msg.mimetype = "application/text";
+     ByteArrayContent content = new ByteArrayContent(msg.ToBytes());
      string rec_sin = Environment.GetEnvironmentVariable("TestB");
 
      // Extract Function endpoint from User Token
@@ -79,7 +83,7 @@ d) All sent and rec msgs are encrypted to SecureIdentity clients over TLS.
 
          byte[] cipherContent = response.Content.ReadAsByteArrayAsync().Result;   
          // Decrypt msg 
-         UserToken.Download dload = UserToken.DecryptMsg(rsp.share, cipherContent);
+         UserToken.Msg dload = UserToken.DecryptMsg(rsp.share, cipherContent);
      }
      else
      {
