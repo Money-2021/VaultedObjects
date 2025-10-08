@@ -1,6 +1,10 @@
 /*
 ITS Secure Messageing with ITSDSA256 Signatures
 Mesage size limited to 20 MB.
+Limitations as all SecureIdentities are offline.:
+a) Only one 'not recived msg' can be outstanding
+b) If second post before read, will recive an error.
+c) Successful read will any delete existing msg. 
 */
 
  [TestMethod]
