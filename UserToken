@@ -116,28 +116,42 @@
  public class UserToken
  {
     public class Msg
-    {
+ {
+     public string recsin { get; set; }
+     public string recjwk { get; set; }
      public byte[] cnt { get; set; }
      public string mimetype { get; set; }
      public string filename { get; set; }
      public string subject { get; set; }
+     public DateTime expire { get; set; }
      public Msg()
      {
- 
+
      }
-    public Msg(byte[] cnt, string mimetype, string filename, string subject)
-    {
-        this.cnt = cnt;
-        this.mimetype = mimetype;
-        this.filename = filename;
-        this.subject = subject;
-    }
-    public byte[] ToBytes()
-    {
-        string sbody = System.Text.Json.JsonSerializer.Serialize(this);
-        return Encoding.UTF8.GetBytes(sbody);
-    }
-}
+     public Msg(string rec_sin, byte[] cnt, string mimetype, string filename, string subject)
+     {
+         this.recsin = rec_sin;
+         this.cnt = cnt;
+         this.mimetype = mimetype;
+         this.filename = filename;
+         this.subject = subject;
+         this.expire = DateTime.UtcNow.AddDays(1);
+     }
+     public void SetExpire(TimeSpan exp)
+     {
+       
+         this.expire = DateTime.UtcNow.Add(exp);
+     }
+     public void SetJwk(string jwk)
+     {
+         this.recjwk = jwk;
+     }
+     public byte[] ToBytes()
+     {
+         string sbody = System.Text.Json.JsonSerializer.Serialize<Msg>(this);
+         return Encoding.UTF8.GetBytes(sbody);
+     }
+ }
      public class RecoveryResponse
      {
          
