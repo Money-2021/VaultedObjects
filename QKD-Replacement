@@ -30,3 +30,4 @@ Note
 Implementing QKD requires specific equipment, is difficult to integrate with existing networks, and lacks universal standards, 
 making it a costly and challenging technology for many organizations to adopt. 
 In addition QKD requires the existance of a classic communications channel to authticate (usally PKI ECDH) the fiber end-devices, self deprecating the QKD security.
+2. The shared Medly vectors are used by each device KG to generate an ITS bit steam and hence provide a complete ITS schannel ebwteen the two device end points.
