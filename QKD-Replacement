@@ -4,7 +4,7 @@ Header
 {
   "alg": "ITSDSA512",  // ITS Digital Signature
   "typ": "JWT",
-  "kid": "1304176999617910846"
+  "kid": "1304176999617910846"  // X448 Key Identifier
 }
 Payload
 {
