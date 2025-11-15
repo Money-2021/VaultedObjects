@@ -1,5 +1,5 @@
 The ITS-KMS supports multi-party ITS secured secret sharing, via the Connect-JwToken.
-Example Token
+Example Offline and out-of band Json Web Token.
 Header
 {
   "alg": "ITSDSA512",  // ITS Digital Signature
