@@ -1,4 +1,4 @@
-The ITS-KMS supports multi-party ITS secured secret sharing, via the Connect-JwToken.
+The ITS-KMS supports multi-party ITS secured secret sharing (medley, compressed vector set), via the Connect-JwToken.
 Example Offline and out-of band Json Web Token.
 Header
 {
