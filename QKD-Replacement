@@ -24,3 +24,9 @@ Payload
 }
 Signature
 YoPa7-qoNBZq36xii6RRXe2-4sKEjw9z2Eb_7oig6byJdMlo-hRzXrgKbDbBujxqjFDkVrYDMyO5ljST8Cr4SL0zvTiO1ivxX7m_wNbduG4  // ITSDSA512 digital signature
+
+Note
+1. QKD is complex due to high costs, limited range, and the need for specialized hardware and only works wehen fiber is available. 
+Implementing QKD requires specific equipment, is difficult to integrate with existing networks, and lacks universal standards, 
+making it a costly and challenging technology for many organizations to adopt. 
+In addition QKD requires the existance of a classic communications channel to authticate (usally PKI ECDH) the fiber end-devices, self deprecating the QKD security.
