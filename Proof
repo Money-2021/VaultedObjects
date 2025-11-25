@@ -28,7 +28,7 @@ Medley supports user defined KG-universals to enable the creation of arbitary ke
 
 Cryptographicly Secure Keys
 A CSBRNG key is not a key in the typical sense, it must be a cryptographically secure key stream, which is not derived, via any computational algorithm. The key stream has to be derived (extracted) from a physical processes (in the case for medley from a QRND source).
-One cannot compute an algorithm to generate a  'key stream' as the result would be a deterministic and hence represent a predictable PRNG, not a cryptography secure key stream and be a non-deterministic key stream not computed from a seed/key.
+One cannot compute an algorithm to generate a 'key stream' as the result would be a deterministic and hence represent a predictable PRNG, not a cryptography secure key stream and be a non-deterministic key stream not computed directly from a seed/key.
 
 Conclusion 
 The Medley (ITS-KMS) creates a pairwise, potentially infinate length, identical secure bit stream (all bits of the key have equal propablity) between two secure Identites (end points) according to this proof.
