@@ -24,6 +24,7 @@ KMS Principles
 8. There exist no public key based algorithms used within the KMS, hence deriving private leys from public keys cannot be an attack vector for any KMS.
 9. All key material is derived from a Quantum Random Numbers source, producing a secure random key stream of arbitary key length.
 10. There exist no HSM elements within the framework as there exists no required key store or key life cycle.
+11. The proof of the Key generator outputs is peformed via a realtime Quality Assurance process whcih dicards any key stream that does not meet the defined unit test cases.
  
 The author(s) certifies, that to the best of their knowledge, this GitHub site contains publicly available, unclassified information only, protected via the 1st and 5th Amendment.
 
