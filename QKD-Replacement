@@ -1,4 +1,6 @@
 The ITS-KMS supports multi-party ITS secured secret sharing (Medley, compressed vector set), via the Connect-JwToken.
+https://github.com/Money-2021/VaultedObjects/blob/main/Connect
+
 Example Offline and out-of band Json Web Token.
 Header
 {
