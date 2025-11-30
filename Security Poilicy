@@ -5,3 +5,4 @@ General Secureity Rules for Vaulted Object End systems
 4. Device split should be stored via an account segregated Data Ptotection API (OS enforced).
 4. As device<->host communication is AESGCM device protected, the VO must be immediatley decrypted upon receipt, as share has a session crypto period.
 5. Vaulted Objects once valul;ted cannot be removed from a VO, as all get Object requests return a "digital original" of the previously VO content.
+6. Connect tokens shoudl be distributed offline to the link end points.
