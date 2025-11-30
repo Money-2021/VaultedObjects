@@ -54,4 +54,58 @@ public void TestMethod_connect()
         throw new Exception(error);
     }
 
+// Extract Shared Key from connect token
+ [TestMethod]
+ public void TestMethod_connect_extract()
+ {
+
+     SET_DEV();
+     string folder = Environment.GetEnvironmentVariable("Envionment");
+
+     string sin = Environment.GetEnvironmentVariable("TestA");
+     string sPath = @"D:\Examples\VO\Connect-" + sin + ".jwt";
+     string jwToken = System.IO.File.ReadAllText(sPath);
+
+     string tokenPath = @"D:\Examples\VO\Devices\DeviceStore-" + _device_sin + ".json";
+     DeviceToken.RecoveryResponse r = DeviceToken.GetDeviceToken(tokenPath);
+
+     // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:5063/");
+     // Obtain Function JwToken
+     HttpClient _httpClient = new HttpClient();
+     // Build funtion endpoint Uri
+     string _relativeUrl = "Device/ExtractKey";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+
+      StringContent content = new StringContent(jwToken);
+     // Add Device Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+     // Add signature
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(jwToken));
+     string ssign = HmacProvider.SignHash(r.share, hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+
+     // Get response
+     HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         string data = response.Content.ReadAsStringAsync().Result;
+         byte[] key = DeviceToken.Decrypt(r.share, Convert.FromBase64String(data));
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         if (string.IsNullOrEmpty(error))
+         {
+             error = response.ReasonPhrase;
+         }
+         throw new Exception(error);
+     }
+
+ }
+
 }
