@@ -2,6 +2,8 @@ The One Cipher...
 A Authenticated Encryption with Associated Data (AEAD) enhanced Vernan Cipher.
 The One Cipher to rule over all others...
 
+"Anyone intelligent can make things bigger and more complex. It takes a touch of genius – and a lot of courage – to move in the opposite direction” —Albert Einstein
+
 public static byte[] XEncrypt(byte[] seed, byte[] iv , byte[] data, byte[] aad = null)
 {
     // QRNG 16 byte true random 
