@@ -1,0 +1,40 @@
+The One Cipher...
+A Authenticated Encryption with Associated Data (AEAD) enhanced Vernan Cipher.
+The One Cipher to rule over all others...
+
+public static byte[] XEncrypt(byte[] seed, byte[] iv , byte[] data, byte[] aad = null)
+{
+    // QRNG 16 byte true random 
+    if(iv.Length > _ivssize)
+        Array.Copy(iv, 0, iv, 0, _ivssize);
+
+    // Seed KG, with compressed Medley vector set 
+    var kg = KeyGenerator.Create(seed, iv);
+
+    // Derive CSBRNG key stream with length of data 
+    byte[] keyBytes = kg.KeyGen(data.Length);
+
+    // CipherText or outbytes
+    byte[] outBytes = new byte[keyBytes.Length];
+    // Check arguments:
+    if (data.Length != keyBytes.Length)
+        throw new ArgumentException("Byte-arrays are not of same length");
+
+    // Encrypt by vernan XOR:
+    for (int i = 0; i < data.Length; i++)
+        outBytes[i] = (byte)(data[i] ^ keyBytes[i]);
+
+    // Generate authenticated TAG to address Vernam Cipher malleability
+    byte[] _key = seed.Take(32).ToArray(); // take one of the compressed medly set, to generate tag..
+    byte[] _tag;
+
+    // Process optional aad
+    if (aad == null)
+        _tag = ComputeTag(_key, outBytes);
+    else
+        _tag = ComputeTag(_key, outBytes.Concat(aad).ToArray()); // simple concat as no padding used in vernan ciphers.
+
+    CryptographicOperations.ZeroMemory(keyBytes);
+    return iv.Concat(_tag).Concat(outBytes).ToArray();
+
+}
