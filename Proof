@@ -40,7 +40,7 @@ Notes
 3. Quantium Key Distribution (QKD) self deprecates as  within QKD, both participating parties need a) the physical devices, b) a connection between those that allows to run QKD, and 
 c) still some authentication method which either requires a shared secret or some complexity-theoretically secure signature scheme. In short in QKD the two parties have to know each other 
 before communicating and pre-stage shared data first. This defeats the purpose of QKD itself.
-4. All modern cipher key schedules are deterministic. A deterministic key schedule, also called a key-schedule algorithm (at best a PRNG computed output), takes the master seed/key and generates a unique set of subkeys or internal state based on a fixed, mathematical process or computable algorithm. 
+4. All modern cipher key schedules are a deterministic. Such deterministic key schedule, also called a key-schedule algorithm (at best a PRNG computed output), takes the master seed/key and generates a unique set of subkeys or internal state based on a fixed, mathematical process or computable algorithm. 
 This ensures that the same seed/key will always produce the same output, which is a core principle of how most modern and insecure ciphers operate.
 
 
