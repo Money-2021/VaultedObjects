@@ -57,7 +57,7 @@ public static byte[] XEncrypt(byte[] seed, byte[] iv , byte[] data, byte[] aad =
 
  }
 
-Supporting Functions
+Optional Supporting Functions
 /// <summary>
 /// Poly1305 authenticator, as defined in RFC 8439:
 /// https://tools.ietf.org/html/rfc8439
