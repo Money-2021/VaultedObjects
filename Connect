@@ -1,4 +1,4 @@
-// DEVICE
+// DEVICE ENDPONTS
 [TestMethod]
 public void TestMethod_connect()
 {
@@ -110,4 +110,109 @@ public void TestMethod_connect()
  }
 
 }
+// ENTITY ENDPONTS
+[TestMethod]
+public void TestMethod_connect()
+{
 
+    SET_DEV();
+    string folder = Environment.GetEnvironmentVariable("Envionment");
+
+    string sinA = Environment.GetEnvironmentVariable("TestA");
+    string sinB = Environment.GetEnvironmentVariable("TestB");
+   
+
+    UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+    string userToken = r.jwToken;
+    // Extract Function endpoint from User Token
+    var securityToken = new JwtSecurityToken(r.jwToken);
+    Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+    //_baseUri = new Uri("http://localhost:5063/");
+    // Obtain Function JwToken
+    HttpClient _httpClient = new HttpClient();
+    // Build funtion endpoint Uri
+    string _relativeUrl = "User/Connect";
+    Uri _uri = new Uri(_baseUri, _relativeUrl);
+    _httpClient.BaseAddress = _baseUri;
+
+    string[] devices = new string[] { sinA, sinB };
+    StringContent content = new StringContent(string.Join(",", devices));
+
+    // Add User Jwtoken
+    _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+    // Add signature
+    byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(sin + devices));
+    string ssign = HmacProvider.SignHash(r.share, hashBytes);
+    _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+
+    // Get response
+    HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+    if (response.IsSuccessStatusCode)
+    {
+        string jwToken = response.Content.ReadAsStringAsync().Result;
+        string sPath = @"D:\Examples\VO\Connect-" + sin + ".jwt";
+        System.IO.File.WriteAllText(sPath, jwToken);
+    }
+    else
+    {
+        // fail
+        string error = response.Content.ReadAsStringAsync().Result;
+        if (string.IsNullOrEmpty(error))
+        {
+            error = response.ReasonPhrase;
+        }
+        throw new Exception(error);
+    }
+
+// Extract Shared Key from connect token
+ [TestMethod]
+ public void TestMethod_connect_extract()
+ {
+
+     SET_DEV();
+     string folder = Environment.GetEnvironmentVariable("Envionment");
+
+     string sin = Environment.GetEnvironmentVariable("TestA");
+     string sPath = @"D:\Examples\VO\Connect-" + sin + ".jwt";
+     string jwToken = System.IO.File.ReadAllText(sPath);
+
+      // Extract Function endpoint from User Token
+     var securityToken = new JwtSecurityToken(r.jwToken);
+     Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
+     //_baseUri = new Uri("http://localhost:5063/");
+     // Obtain Function JwToken
+     HttpClient _httpClient = new HttpClient();
+     // Build funtion endpoint Uri
+     string _relativeUrl = "User/ExtractKey";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+
+      StringContent content = new StringContent(jwToken);
+     // Add Device Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+     // Add signature
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(jwToken));
+     string ssign = HmacProvider.SignHash(r.share, hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+
+     // Get response
+     HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         string data = response.Content.ReadAsStringAsync().Result;
+         byte[] key = UserToken.Decrypt(r.share, Convert.FromBase64String(data));
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         if (string.IsNullOrEmpty(error))
+         {
+             error = response.ReasonPhrase;
+         }
+         throw new Exception(error);
+     }
+
+ }
+
+}
