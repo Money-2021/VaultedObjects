@@ -1,3 +1,4 @@
+// DEVICE
 [TestMethod]
 public void TestMethod_connect()
 {
@@ -109,3 +110,4 @@ public void TestMethod_connect()
  }
 
 }
+
