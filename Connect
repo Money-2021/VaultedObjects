@@ -22,7 +22,7 @@ public void TestMethod_connect()
     // Obtain Function JwToken
     HttpClient _httpClient = new HttpClient();
     // Build funtion endpoint Uri
-    string _relativeUrl = "User/Connect";
+    string _relativeUrl = "Device/Connect";
     Uri _uri = new Uri(_baseUri, _relativeUrl);
     _httpClient.BaseAddress = _baseUri;
 
