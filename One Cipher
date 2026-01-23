@@ -14,7 +14,7 @@ The One Cipher to rule over all others...
      {
          byte[] iv = RandomNumberGenerator.GetBytes(_ivssize);
          // Derive key with length of data 
-         byte[] keyBytes = new Shake256().GetCurrentHash(data.Length);
+         byte[] keyBytes = new Shake256().GetCurrentHash(data.Length);  // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
          // CipherText or outbytes
          byte[] outBytes = new byte[keyBytes.Length];
 
