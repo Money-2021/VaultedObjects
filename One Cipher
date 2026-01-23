@@ -50,7 +50,7 @@ The One Cipher to rule over all others...
  /// <returns></returns>
  /// <exception cref="ArgumentException"></exception>
  /// <exception cref="Exception"></exception>
- public static byte[] XDerypt(byte[] seed, byte[] cipherBytes,byte[] aad = null)
+ public static byte[] XDecrypt(byte[] seed, byte[] cipherBytes,byte[] aad = null)
  {
    
      // Calaulate cipher Length
