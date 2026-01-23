@@ -8,6 +8,7 @@ The One Cipher to rule over all others...
  public class OneCipher
  {
      const int _ivssize = 16;
+     const int _macsize = 16; 
      public static byte[] XEncrypt(byte[] seed,byte[] data, byte[] aad = null)
      {
          byte[] iv = RandomNumberGenerator.GetBytes(_ivssize);
