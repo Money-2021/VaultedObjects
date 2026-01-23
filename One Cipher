@@ -39,6 +39,63 @@ The One Cipher to rule over all others...
 
      }
 
+ /// <summary>
+ /// Extended Decrypt, variable length data with fixed 64 byte seed/key
+ /// </summary>
+ /// <param name="seed"></param>
+ /// <param name="cipherBytes"></param>
+ /// <param name="aad">additional authenticated data</param>
+ /// <returns></returns>
+ /// <exception cref="ArgumentException"></exception>
+ /// <exception cref="Exception"></exception>
+ public static byte[] XDerypt(byte[] seed, byte[] cipherBytes,byte[] aad = null)
+ {
+   
+     // Calaulate cipher Length
+     int cipherLength = cipherBytes.Length - (_ivssize + _macsize);
+               
+     var iv = new byte[_ivssize];
+     var tag = new byte[_macsize];
+     var ciphertext = new byte[cipherLength];
+
+     // Extract
+     Buffer.BlockCopy(cipherBytes, 0, iv, 0, _ivssize);
+     Buffer.BlockCopy(cipherBytes, _ivssize, tag, 0, _macsize);
+     Buffer.BlockCopy(cipherBytes, _ivssize + _macsize, ciphertext, 0, cipherLength);
+
+     // Derive data length key
+     byte[] keyBytes = KeyGenerator.Create(seed, iv).KeyGen(cipherLength);
+
+     byte[] outBytes = new byte[cipherLength];
+
+     // Check arguments:
+     if ((ciphertext.Length != keyBytes.Length) ||
+         (keyBytes.Length != outBytes.Length))
+         throw new ArgumentException("Byte-array are not of same length");
+
+     // Compute MAC
+     byte[] _key = seed.Take(32).ToArray();
+     byte[] _tag;
+     // Process optional aad
+     if (aad == null)
+         _tag = ComputeTag(_key, ciphertext);
+     else
+         _tag = ComputeTag(_key, ciphertext.Concat(aad).ToArray());
+
+     // Check tag 
+     bool bResult = tag.SequenceEqual(_tag);
+     if (bResult == false)
+         throw new Exception("Tag Error..");
+
+     // Decrypt by XOR:
+     for (int i = 0; i < ciphertext.Length; i++)
+         outBytes[i] = (byte)(ciphertext[i] ^ keyBytes[i]);
+     // Clean
+     CryptographicOperations.ZeroMemory(keyBytes);
+     return outBytes;
+
+ }
+
      /// <summary>
      /// HMACSHA256-128
      /// Compute 16 byte (128 bit) Tag
