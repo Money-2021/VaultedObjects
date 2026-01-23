@@ -12,7 +12,7 @@ The One Cipher to rule over all others...
      const int _macsize = 16; 
      public static byte[] XEncrypt(byte[] seed,byte[] data, byte[] aad = null)
      {
-         byte[] iv = RandomNumberGenerator.GetBytes(_ivssize);
+         byte[] iv = RandomNumberGenerator.GetBytes(_ivssize); // Simplified non QRND iv.
          // Derive key with length of data 
          byte[] keyBytes = new Shake256().GetCurrentHash(data.Length);  // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
          // CipherText or outbytes
