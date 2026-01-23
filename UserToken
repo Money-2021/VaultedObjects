@@ -33,62 +33,7 @@
      }
  }
    
- public class AesProvider
- {
-   
-     public static byte[] Encrypt(byte[] key, byte[] data)
-     {
-         int ivSize = AesGcm.NonceByteSizes.MaxSize;
-         int tagSize = AesGcm.TagByteSizes.MaxSize;
-         byte[] iv = new byte[ivSize];
-         byte[] tag = new byte[tagSize];
-         byte[] ciphertext = new byte[data.Length];
-         RandomNumberGenerator.Create().GetBytes(iv);
-         // Normalise
-         HMAC hmac = new HMACSHA256(key);
-         byte[] _key = hmac.ComputeHash(iv);
-         // Perform AES-GCM encryption
-         using (AesGcm aes = new AesGcm(_key, tagSize))
-         {
-             aes.Encrypt(iv, data, ciphertext, tag);
-         }
-         // Combine IV, ciphertext, and tag into a single byte array for storage
-         byte[] encryptedData = new byte[ivSize + ciphertext.Length + tagSize];
-         Buffer.BlockCopy(iv, 0, encryptedData, 0, ivSize);
-         Buffer.BlockCopy(ciphertext, 0, encryptedData, ivSize, ciphertext.Length);
-         Buffer.BlockCopy(tag, 0, encryptedData, ivSize + ciphertext.Length, tagSize);
-         return encryptedData;
-     }
 
-     public static byte[] Decrypt(byte[] key, byte[] cipherBytes)
-     {
-         int ivSize = AesGcm.NonceByteSizes.MaxSize;
-         int tagSize = AesGcm.TagByteSizes.MaxSize;
-
-         // Extract iv, ciphertext
-         byte[] iv = new byte[ivSize];
-         byte[] tag = new byte[tagSize];
-         byte[] ciphertext = new byte[cipherBytes.Length - ivSize - tagSize];
-
-         // Extract
-         Buffer.BlockCopy(cipherBytes, 0, iv, 0, ivSize);
-         Buffer.BlockCopy(cipherBytes, ivSize, ciphertext, 0, ciphertext.Length);
-         Buffer.BlockCopy(cipherBytes, ivSize + ciphertext.Length, tag, 0, tagSize);
-
-         // Allocate an array to store the decrypted plaintext
-         byte[] plaintextBytes = new byte[ciphertext.Length];
-         // Normalise
-         HMAC hmac = new HMACSHA256(key);
-         byte[] _key = hmac.ComputeHash(iv);
-         // Perform AES-GCM decryption using the constructor that accepts the tag size
-         using (var aes = new AesGcm(_key, tagSize))
-         {
-             aes.Decrypt(iv, ciphertext, tag, plaintextBytes);
-         }
-
-         return plaintextBytes;
-     }
- }
  public class HmacProvider
  {
 
