@@ -127,7 +127,7 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
          byte[] output = new byte[_ivssize];
  #if FULL
             Poly1305 p = new Poly1305(key);
-             Array.Copy(p.CalcMac(data), output, _ivssize);
+            Array.Copy(p.CalcMac(data), output, _ivssize);
 #else
             // HMACSHA256-128
             HMAC hmac = new HMACSHA256(key);
