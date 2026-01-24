@@ -23,7 +23,7 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
 #else
            byte[] iv = RandomNumberGenerator.GetBytes(_ivssize); // Simplified non QRND iv.
            // Derive key with length of data , using System.Security.Cryptography.Shake256. Seed is a QRND
-            byte[] keyBytes =  Shake256.HashData(seed, data.Length); // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
+           byte[] keyBytes =  Shake256.HashData(seed, data.Length); // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
 #endif
          // CipherText or outbytes
          byte[] outBytes = new byte[keyBytes.Length];
