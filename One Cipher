@@ -14,8 +14,15 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
      public static byte[] XEncrypt(byte[] seed,byte[] data, byte[] aad = null)
      {
          byte[] iv = RandomNumberGenerator.GetBytes(_ivssize); // Simplified non QRND iv.
-         // Derive key with length of data , using System.Security.Cryptography.Shake256
-         byte[] keyBytes =  Shake256.HashData(seed, data.Length);// A determinitic PRNG rather than the CSNBRNG key generator (KG). 
+         // Derive key with length of data 
+#if FULL
+            var kg = KeyGenerator.Create(seed, iv);
+            // Derive CSBRNG key stream with length of data 
+            byte[] keyBytes = kg.KeyGen(data.Length);
+#else
+           // Derive key with length of data , using System.Security.Cryptography.Shake256
+            byte[] keyBytes =  Shake256.HashData(seed, data.Length); // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
+#endif
          // CipherText or outbytes
          byte[] outBytes = new byte[keyBytes.Length];
 
@@ -67,7 +74,13 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
      Buffer.BlockCopy(cipherBytes, _ivssize + _macsize, ciphertext, 0, cipherLength);
 
      // Derive key with length of data 
-      byte[] keyBytes = Shake256.HashData(seed, cipherLength);
+#if FULL
+            var kg = KeyGenerator.Create(seed, iv);
+            // Derive CSBRNG key stream with length of data 
+            byte[] keyBytes = kg.KeyGen(data.Length);
+#else
+            byte[] keyBytes = Shake256.HashData(seed, cipherLength); // A determinitic PRNG rather than the CSNBRNG key generator (KG). 
+#endif
 
      byte[] outBytes = new byte[cipherLength];
 
