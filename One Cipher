@@ -1,4 +1,4 @@
-The One Cipher...
+System.Security.Cryptography;The One Cipher...
 A Authenticated Encryption with Associated Data (AEAD) enhanced Vernan Cipher.
 The One Cipher to rule over all others...
 *** This is a simplyfied (non key generator) version for usage within the End Point <-> Host schannel. This should not be used as a genral purpose cipher without a verifiable CSNBRNG key generator.
@@ -14,7 +14,7 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
      public static byte[] XEncrypt(byte[] seed,byte[] data, byte[] aad = null)
      {
          byte[] iv = RandomNumberGenerator.GetBytes(_ivssize); // Simplified non QRND iv.
-         // Derive key with length of data 
+         // Derive key with length of data , using System.Security.Cryptography.Shake256
          byte[] keyBytes =  Shake256.HashData(seed, data.Length);// A determinitic PRNG rather than the CSNBRNG key generator (KG). 
          // CipherText or outbytes
          byte[] outBytes = new byte[keyBytes.Length];
