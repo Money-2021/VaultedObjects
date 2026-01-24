@@ -16,7 +16,7 @@ The full One Cipher is available via the Security as a Service (SaaS) platform.
            
             // Derive key with length of data 
 #if FULL
-            byte[] iv =  SecureKeyGenerator.Create().GetBytes(_ivssize); // Generate Max entropy iv derived from QRND.
+            byte[] iv =  SecureKeyGenerator.Create().GetBytes(_ivssize); // Generate Max entropy iv, derived from QRND.
             var kg = KeyGenerator.Create(seed, iv);  // Seed is compressed Mewdley vector set
             // Derive CSBRNG key stream with length of data 
             byte[] keyBytes = kg.KeyGen(data.Length);
