@@ -5,6 +5,8 @@ The One Cipher to rule over all others...
 DISCLAIMER: This simplfied OneCipher is NOT a general purpose cipher, which requires a verified CSNBRNG key stream and Medley vectors to be ITS secure as per the proof.
 The full One Cipher is available via the Security as a Service (SaaS) platform.
 
+Disclaimer: as this is essentially an ITS TLS replacement schannel between the End Poimt and the node/host, it cannot be modified.
+
 "Anyone intelligent can make things bigger and more complex. It takes a touch of genius – and a lot of courage – to move in the opposite direction” —Albert Einstein
 
      /// <summary>
