@@ -4,7 +4,7 @@ Last Mile->Fido Provider - Post Quantium Statementg
 This approach addresses the "last mile" of risk, which is often where user behavior and unsecured, unmanaged, or misconfigured device technology intersect.
 Last-mile security secures the final, vulnerable connection as it bridges the gap between infrastructure protection and user device activity. 
 
-ECDH-EE 
+Authenticated ECDH-EE 
 Elliptic Curve Diffie-Hellman Ephemeral-Ephemeral is a specific mode of the Elliptic Curve Diffie-Hellman (ECDH) key agreement protocol where both parties use ephemeral (temporary) key pairs for a single last session.
 Key Characteristics
 Double Ephemeral: Unlike "Static-Static" or "Ephemeral-Static" modes, both the initiator and the responder generate a new, one-time key pair for every transaction.
@@ -22,8 +22,10 @@ The Channel to the Infrastructure or Host is encrypted via the One Cipher using 
 2.	Alice uses the ITS-KMS to regenerate the original private key on the Host.
 3.	Alice uses the device public key to generate the same 'shared CSBRNG seed' and hence can decrypt the One Cipher data.
 
-As the Ephemeral-Ephemerial public keys exist from milli seconds to seconds range, the probality of any quantium computer deriveing eaither of the private keys is as close to zero as possible.
+Notes
+1. As the Ephemeral-Ephemerial public keys exist from milli seconds to seconds range, the probality of any quantium computer deriveing eaither of the private keys is as close to zero as possible.
 The atatck surface has been effectvly reduced to zero enen if in theory it remaoin non-zero.
+2. Standalone ECDH-EE is subject to man-in-middle atatcks, hence all flows are authentiocvated via Ed25519 Signtaures
  
 
 
