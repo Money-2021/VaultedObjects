@@ -25,7 +25,7 @@ The Channel to the Infrastructure or Host is encrypted via the One Cipher using 
 Notes
 1. As the Ephemeral-Ephemerial public keys exist from milli seconds to seconds range, the probality of any quantium computer deriveing eaither of the private keys is as close to zero as possible.
 The atatck surface has been effectvly reduced to zero enen if in theory it remaoin non-zero.
-2. Standalone ECDH-EE is subject to man-in-middle atatcks, hence all flows are authentiocvated via Ed25519 Signtaures
+2. Standalone ECDH-EE is subject to man-in-middle attacks, hence all flows are authentiocvated via a Ed25519 Signtaure
  
 
 
