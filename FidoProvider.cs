@@ -1,187 +1,129 @@
-﻿using EllipticCurve.Utils;
-using Json;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Testing.Platform.Extensions.Messages;
-using SqlServer.Providers;
-using System.Collections;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
-
 public class FidoProvider
-    {
+{
     // Supporting Objects
-  
-    public class DeviceFido
+    public class Base64Url
+    {
+        public static string Encode(byte[] input)
         {
-            public string SecureIdentity { get; set; }      // Secure Identity
-            public string DeviceSin { get; set; }           // Device Secure Identity
-            public byte[] KeyHandle { get; set; }           // Registration Key Handle 
-            public string JwKey { get; set; }               // Device Public Key
-            public long Counter{ get; set; }                 // Cik (32 bit signed integer)
-            public string JwToken { get; set; }             // Device JWToken
+            return Convert.ToBase64String(input).Split('=')[0].Replace('+', '-').Replace('/', '_');
+        }
 
-            public DeviceFido()
+        public static byte[] Decode(string input)
+        {
+            string text = input;
+            text = text.Replace('-', '+'); // 62nd char of encoding
+            text = text.Replace('_', '/'); // 63rd char of encoding
+            switch (text.Length % 4) // Pad with trailing '='s
             {
+                case 2: // Two pad chars
+                    text += "==";
+                    break;
+                case 3: // One pad char
+                    text += "=";
+                    break;
+                case 0: // No pad chars in this case
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("input", "Illegal base64url string!");
+
             }
-            public DeviceFido(string json)
+
+            return Convert.FromBase64String(text);
+        }
+    }
+    public class DeviceStore 
+    {
+        public string SecureIdentity { get; set; }      // Secure Identity
+        public byte[] KeyHandle { get; set; }           // Registration Key Handle 
+        public string JwKey { get; set; }               // Device Ed25519 Public Key
+        public long Counter { get; set; }                 // Cik (32 bit signed integer)
+        public string JwToken { get; set; }             // User JWToken
+        public byte[] ProtectedDeviceKey { get; set; }
+        public string DeviceSin { get; set; }           // Device Secure Identity
+
+        public DeviceStore()
+        {
+
+        }
+     
+        public string ToJason()
+        {
+
+            MemoryStream ms = new MemoryStream();
+            using (Utf8JsonWriter writer = new Utf8JsonWriter(ms))
             {
-                // Parse json
-                var options = new JsonReaderOptions
-                {
-                    AllowTrailingCommas = true,
-                    CommentHandling = JsonCommentHandling.Skip
-                };
-                var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), options);
-                while (reader.Read())
-                {
-                    switch (reader.TokenType)
-                    {
-                        case JsonTokenType.PropertyName:
-                        case JsonTokenType.String:
+                writer.WriteStartObject();
+                writer.WritePropertyName("SecureIdentity");
+                writer.WriteStringValue(SecureIdentity);
+                writer.WritePropertyName("DeviceSin");
+                writer.WriteStringValue(DeviceSin);
+                writer.WritePropertyName("JwKey");
+                writer.WriteStringValue(JwKey);
+                writer.WritePropertyName("JwToken");
+                writer.WriteStringValue(JwToken);
+                writer.WritePropertyName("KeyHandle");
+                writer.WriteStringValue(Convert.ToBase64String(KeyHandle));
+                writer.WritePropertyName("ProtectedDeviceKey");
+                writer.WriteStringValue(Convert.ToBase64String(ProtectedDeviceKey));
+                writer.WriteEndObject();
 
-                            string text = reader.GetString();
-                            switch (text)
-                            {
-
-                                case "SecureIdentity":
-                                    SecureIdentity = text;
-                                    break;
-                                case "DeviceSin":
-                                    DeviceSin = text;
-                                    break;
-                                case "KeyHandle":
-                                    KeyHandle = Convert.FromBase64String(text);
-                                    break;
-                                case "Counter":
-                                    Counter = Convert.ToInt32(text);
-                                    break;
-                                case "JwKey":
-                                    JwKey = text;
-                                    break;
-                                case "JwToken":
-                                    JwToken = text;
-                                    break;
-                            }
-                            break;
-
-                    }
-                }
             }
-           
-            public string ToJason()
+            return Encoding.UTF8.GetString(ms.ToArray());
+
+        }
+        public DeviceStore(string json)
+        {
+            // Parse json
+            var options = new JsonReaderOptions
             {
-                MemoryStream ms = new MemoryStream();
-                using (Utf8JsonWriter writer = new Utf8JsonWriter(ms))
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip
+            };
+            var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), options);
+            while (reader.Read())
+            {
+                switch (reader.TokenType)
                 {
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("SecureIdentity");
-                    writer.WriteStringValue(SecureIdentity);
-                    writer.WritePropertyName("DeviceSin");
-                    writer.WriteStringValue(DeviceSin);
-                    writer.WritePropertyName("JwKey");
-                    writer.WriteStringValue(JwKey);
-                    writer.WritePropertyName("Counter");
-                    writer.WriteNumberValue(Counter);
-                    writer.WritePropertyName("JwToken");
-                    writer.WriteStringValue(JwToken);
-                    writer.WritePropertyName("KeyHandle");
-                    writer.WriteStringValue(Convert.ToBase64String(KeyHandle));
-                    writer.WriteEndObject();
+                    case JsonTokenType.PropertyName:
+                    case JsonTokenType.String:
+
+                        string text = reader.GetString();
+                        switch (text)
+                        {
+
+                            case "SecureIdentity":
+                                SecureIdentity = text;
+                                break;
+                            case "DeviceSin":
+                                DeviceSin = text;
+                                break;
+                            case "KeyHandle":
+                                KeyHandle = Convert.FromBase64String(text);
+                                break;
+                            case "ProtectedDeviceKey":
+                                ProtectedDeviceKey = Convert.FromBase64String(text);
+                                break;
+                            case "Counter":
+                                Counter = Convert.ToInt32(text);
+                                break;
+                            case "JwKey":
+                                JwKey = text;
+                                break;
+                            case "JwToken":
+                                JwToken = text;
+                                break;
+                        }
+                        break;
 
                 }
-                return Encoding.UTF8.GetString(ms.ToArray());
-                
-
             }
         }
-        public class DeviceStore:DeviceFido
-        {
-           public byte[]  ProtectedDeviceKey { get; set; }
-           public byte[] Share { get; set; }
-           public bool? isProtected { get; set; }
-        public DeviceStore()
-            {
-            }
-            public string ToJason()
-            {
-                MemoryStream ms = new MemoryStream();
-                using (Utf8JsonWriter writer = new Utf8JsonWriter(ms))
-                {
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("SecureIdentity");
-                    writer.WriteStringValue(SecureIdentity);
-                    writer.WritePropertyName("DeviceSin");
-                    writer.WriteStringValue(DeviceSin);
-                    writer.WritePropertyName("JwKey");
-                    writer.WriteStringValue(JwKey);
-                    writer.WritePropertyName("JwToken");
-                    writer.WriteStringValue(JwToken);
-                    writer.WritePropertyName("KeyHandle");
-                    writer.WriteStringValue(Convert.ToBase64String(KeyHandle));
-                    writer.WritePropertyName("Share");
-                    writer.WriteStringValue(Convert.ToBase64String(Share));
-                    writer.WritePropertyName("ProtectedDeviceKey");
-                    writer.WriteStringValue(Convert.ToBase64String(ProtectedDeviceKey));
-                    writer.WriteEndObject();
+    }
 
-                }
-                return Encoding.UTF8.GetString(ms.ToArray());
-
-            }
-            public DeviceStore(string json)
-            {
-                // Parse json
-                var options = new JsonReaderOptions
-                {
-                    AllowTrailingCommas = true,
-                    CommentHandling = JsonCommentHandling.Skip
-                };
-                var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), options);
-                while (reader.Read())
-                {
-                    switch (reader.TokenType)
-                    {
-                        case JsonTokenType.PropertyName:
-                        case JsonTokenType.String:
-
-                             string text = reader.GetString();
-                             switch (text)
-                                {
-
-                                    case "SecureIdentity":
-                                        SecureIdentity = text;
-                                        break;
-                                    case "DeviceSin":
-                                        DeviceSin = text;
-                                        break;
-                                    case "KeyHandle":
-                                        KeyHandle = Convert.FromBase64String(text);
-                                        break;
-                                    case "ProtectedDeviceKey":
-                                        ProtectedDeviceKey = Convert.FromBase64String(text);
-                                        break;
-                                    case "Counter":
-                                        Counter = Convert.ToInt32(text);
-                                        break;
-                                    case "JwKey":
-                                        JwKey = text;
-                                        break;
-                                    case "JwToken":
-                                        JwToken = text;
-                                        break;
-                                }
-                            break;
-
-                            }
-                    }
-                }
-            }
-
-
-    private byte[] protDeviceKey { get; set; }
     private Edward25519.KeyPair _kp;
     private string _audience;
     DeviceStore ds;
@@ -190,14 +132,13 @@ public class FidoProvider
     public FidoProvider(string sin, byte[] pDevicekey)
     {
 
-        protDeviceKey = pDevicekey;
         ds = new DeviceStore();
+        ds.ProtectedDeviceKey = pDevicekey;
         ds.SecureIdentity = sin;
     
     }
     public FidoProvider(DeviceStore device)
     {
-        protDeviceKey = device.ProtectedDeviceKey;
         ds = device;
         byte[] _key = DeriveKey(device.KeyHandle);
         _kp = Edward25519.Ed25519.GenerateKeyPair(_key);
@@ -205,7 +146,6 @@ public class FidoProvider
     }
     public FidoProvider(string sin, byte[] pDevicekey, byte[] keyHandle)
     {
-        protDeviceKey = pDevicekey;
         ds = new DeviceStore();
         ds.SecureIdentity = sin;
         // Derive Key
@@ -219,7 +159,7 @@ public class FidoProvider
         FidoProvider p = new FidoProvider(store);
         return p;
     }
-    public static int ExtractSize(string token)
+    public int ExtractSize(string token)
     {
         string content = token.Split('.')[1]; // second segment
         var jsonPayload = Base64Url.Decode(content);
@@ -232,10 +172,19 @@ public class FidoProvider
         }
         return Convert.ToInt32(skey);
     }
+   
     public Guid GetGuid()
     {
         byte[] rnd = RandomNumberGenerator.GetBytes(16);
         return new Guid(rnd);
+    }
+    public byte[] LongToBytes(long value)
+    {
+        ulong _value = (ulong)value;
+
+        return BitConverter.IsLittleEndian
+            ? new[] { (byte)((_value >> 56) & 0xFF), (byte)((_value >> 48) & 0xFF), (byte)((_value >> 40) & 0xFF), (byte)((_value >> 32) & 0xFF), (byte)((_value >> 24) & 0xFF), (byte)((_value >> 16) & 0xFF), (byte)((_value >> 8) & 0xFF), (byte)(_value & 0xFF) }
+            : new[] { (byte)(_value & 0xFF), (byte)((_value >> 8) & 0xFF), (byte)((_value >> 16) & 0xFF), (byte)((_value >> 24) & 0xFF), (byte)((_value >> 32) & 0xFF), (byte)((_value >> 40) & 0xFF), (byte)((_value >> 48) & 0xFF), (byte)((_value >> 56) & 0xFF) };
     }
     public static string ExtractAudience(string token)
     {
@@ -265,23 +214,24 @@ public class FidoProvider
         string sjti = claims.FirstOrDefault(x => x.Key.ToLower() == "jti").Value;
         return new Guid(sjti);
     }
+   
     public string Audience()
     {
         return _audience;
     }
-    public string JwToken()
+    public string GetJwToken()
     {
         return ds.JwToken;
     }
-    public string SecureIdentity()
+    public string GetSecureIdentity()
     {
         return ds.SecureIdentity;
     }
-    public string DeviceSin()
+    public string GetDeviceSin()
     {
         return ds.DeviceSin;
     }
-    public long Counter()
+    public long GetCounter()
     {
         return ds.Counter;
     }
@@ -305,40 +255,13 @@ public class FidoProvider
     {
         string sToken = System.IO.File.ReadAllText(storePath);
         DeviceStore store = JsonSerializer.Deserialize<DeviceStore>(sToken);
-        // Check protected
-        if (store.isProtected.HasValue == false || store.isProtected == false)
-        {
-
-            // Always protect
-            store.isProtected = true;
-            byte[] encCode = Protect(store.Share);
-            // Check 
-            byte[] pCode = UnProtect(encCode);
-            if (ByteArraysEqual(pCode, store.Share) == false)
-                throw new Exception("Share different");
-            store.Share = encCode;
-            // Save with encypted setupcode
-            string json = System.Text.Json.JsonSerializer.Serialize<DeviceStore>(store);
-            System.IO.File.WriteAllText(storePath, json);
-            // Return plaintext
-            store.Share = pCode;
-
-        }
-        else if (store.isProtected == true)
-        {
-            byte[] pCode = UnProtect(store.Share);
-            store.Share = pCode;
-        }
-
         // Check expire exp
         bool isExpired = CheckExpired(store.JwToken);
         if (isExpired)
         {
-            UserToken.RecoveryResponse r = TokenRefresh(store.JwToken);
+            RecoveryResponse r = TokenRefresh(store.JwToken);
             // Update Device Token
             store.JwToken = r.jwToken;
-            store.Share = r.share; // Mandatory refresh
-            store.isProtected = false; // unprotected from refresh
             store.Counter = r.counter;
             // Save DeviceStore
             SaveStore(storePath, store);
@@ -346,9 +269,24 @@ public class FidoProvider
 
         return store;
     }
-    private static UserToken.RecoveryResponse TokenRefresh(string jwToken)
-    {
 
+    public class RecoveryResponse
+    {
+        public RecoveryResponse()
+        {
+        }
+        public RecoveryResponse(bool protect = false)
+        {
+            isProtected = protect;
+        }
+        public long counter { get; set; }
+        public byte[] share { get; set; }
+        public string jwToken { get; set; }
+        public bool? isProtected { get; set; } //  encrypted setupcode
+    }
+    private static RecoveryResponse TokenRefresh(string jwToken)
+    {
+      
         // Extract Function endpoint from User Token
         var securityToken = new JwtSecurityToken(jwToken);
         var claim = securityToken.Claims.FirstOrDefault(x => x.Type == "SecureIdentity");
@@ -364,18 +302,14 @@ public class FidoProvider
         _httpClient.BaseAddress = _baseUri;
         // Add User Jwtoken
         _httpClient.DefaultRequestHeaders.Add("x-token", jwToken);
-        // Add Jws 
-        byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(_secureIdentity + _jti));
-        string ssign = HmacProvider.SignHash(hashBytes, hashBytes);
-        _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
-        // Get response
+         // Get response
         HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
         if (response.IsSuccessStatusCode)
         {
             // pass
             string json = response.Content.ReadAsStringAsync().Result;
             // New Rec
-            return System.Text.Json.JsonSerializer.Deserialize<UserToken.RecoveryResponse>(json);
+            return System.Text.Json.JsonSerializer.Deserialize<RecoveryResponse>(json);
         }
         else
         {
@@ -407,14 +341,6 @@ public class FidoProvider
 
     public static void SaveStore(string userTokenPath, DeviceStore store)
     {
-        // Encrypt setupcode
-        // Check protected
-        if (store.isProtected.HasValue == false || store.isProtected == false)
-        {
-            // setupcode in plaintext. so protect
-            store.Share = Protect(store.Share);
-            store.isProtected = true;
-        }
         // Serialise
         JsonSerializerOptions jso = new JsonSerializerOptions();
         jso.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
@@ -422,6 +348,7 @@ public class FidoProvider
         System.IO.File.WriteAllText(userTokenPath, json);
 
     }
+   
     public static byte[] GenerateProtectedDeviceKey()
         {
             // Generate 32 byte random device key, this is injected in the hardware version of a Fido token.
@@ -499,13 +426,35 @@ public class FidoProvider
         }
         return Encoding.UTF8.GetString(ms.ToArray());
     }
+    public static string ExportX25519ToJwk(byte[] publickey)
+    {
+        // Build JsonWebKey
+        MemoryStream ms = new MemoryStream();
+        using (Utf8JsonWriter writer = new Utf8JsonWriter(ms))
+        {
+            writer.WriteStartObject();
+            writer.WritePropertyName("Alg");
+            writer.WriteStringValue("X25519");
+            writer.WritePropertyName("Kty");
+            writer.WriteStringValue("OKP");
+            writer.WritePropertyName("Kid");
+            writer.WriteStringValue(RIPEMD160.Create().ComputeHash(publickey).ToHex());
+            writer.WritePropertyName("Crv");
+            writer.WriteStringValue("Curve25519");
+            writer.WritePropertyName("X");
+            writer.WriteStringValue(Base64UrlEncoder.Encode(publickey));
+            writer.WriteEndObject();
+
+        }
+        return Encoding.UTF8.GetString(ms.ToArray());
+    }
     /// <summary>
     /// Register Device
     /// </summary>
     /// <param name="sin">Secure Identity</param>
     /// <returns>KeyHandle</returns>
     /// <exception cref="Exception"></exception>
-    public DeviceFido Register()
+    public DeviceStore Register()
     {
 
         // FIDO AppId->SecureIdentity
@@ -518,8 +467,10 @@ public class FidoProvider
         byte[] KeyHandle = DeriveKeyHandle(nounce, Appid, _keyBytes);
         // Ed25519 signatures
         Edward25519.KeyPair kp = Edward25519.Ed25519.GenerateKeyPair(_keyBytes);
-        // Return DeviceFido 
-        DeviceFido d = new DeviceFido();
+
+        // Return DeviceStore 
+        DeviceStore d = new DeviceStore();
+        d.ProtectedDeviceKey = ds.ProtectedDeviceKey;
         d.SecureIdentity = ds.SecureIdentity;
         d.KeyHandle = KeyHandle;
         d.JwKey = ExportEd25519ToJwk(kp.PublicKey);
@@ -527,7 +478,22 @@ public class FidoProvider
         return d;
 
     }
+    
+    public string GetX25519PublicKey()
+    {
+        // FIDO AppId->SecureIdentity
+        byte[] Appid = Encoding.UTF8.GetBytes(ds.SecureIdentity);
+        // Generate registration nounce
+        byte[] nounce = new byte[32];
+        RandomNumberGenerator.Create().GetBytes(nounce);
+        // Derive private key .
+        byte[] _keyBytes = DeriveKey(Appid, nounce);
+        byte[] KeyHandle = DeriveKeyHandle(nounce, Appid, _keyBytes);
+        // Ed25519 signatures
+        Edward25519.KeyPair kp = Edward25519.Curve25519.GenerateKeyPair(_keyBytes);
+        return ExportX25519ToJwk(kp.PublicKey);
 
+    }
 
     /// <summary>
     /// Sign and return Signature (bytes[]),
@@ -536,11 +502,11 @@ public class FidoProvider
     /// <param name="hashData"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public byte[] SignHash(byte[] hashData)
+    public string  SignHash(byte[] hashData)
     {
         // Ed25519
         byte[] signature = Edward25519.Ed25519.Sign(hashData, _kp);
-        return signature;
+        return Base64Url.Encode(signature);
     }
 
     private byte[] DeriveKey(byte[] keyHandle)
@@ -567,26 +533,62 @@ public class FidoProvider
         var keys = Edward25519.KeyAgreement.GenerateKeyPair(); // ephemerial
         return ExportEcdhToJwk(keys.PublicKey);
     }
-    public Dictionary<string, byte[]> EncryptObject(byte[] data, Guid jti, string jwk)
+    #region schannel
+    /// <summary>
+    /// Encrypt session
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="jwtoken">xxxxMe Token</param>
+    /// <returns></returns>
+    public Dictionary<byte[], byte[]> Encrypt(byte[] data, string jwtoken)
     {
-        var dict = new Dictionary<string, byte[]>();
-        byte[] _key = DeriveSessionKey(jti, jwk);
+        Guid jti = FidoProvider.ExtractJti(jwtoken);
+        string jwk = FidoProvider.ExtractJwk(jwtoken);
+        byte[] pk = FidoProvider.JwkToPKeyBytes(jwk);
+        // Derive session key
+        var dict = new Dictionary<byte[], byte[]>();
+        Dictionary<string, byte[]> d = DeriveSessionKey(jti, jwk);
+        byte[] _key = d.FirstOrDefault().Value;
         byte[] cipherText = OneCipher.XEncrypt(_key, data);
-        dict.Add("ciphertext", cipherText);
-        dict.Add("key", _key);
+        dict.Add(cipherText, _key);
         CryptographicOperations.ZeroMemory(_key);
         return dict;
     }
-    public byte[] DecryptObject(byte[] cipherText, Guid jti, string jwk)
+    public Dictionary<string, byte[]> ShareEncrypt(byte[] data, string jwtoken)
     {
-        byte[] _key = DeriveSessionKey(jti, jwk);
+        Guid jti = FidoProvider.ExtractJti(jwtoken);
+        string jwk = FidoProvider.ExtractJwk(jwtoken);
+        byte[] pk = FidoProvider.JwkToPKeyBytes(jwk);
+        // Derive session key
+        Dictionary<string, byte[]> d = SharedSecret(jwtoken);
+        string _jwk = d.FirstOrDefault().Key;
+        byte[] _key = d.FirstOrDefault().Value;
+        byte[] cipherText = OneCipher.XEncrypt(_key, data);
+        Dictionary<string, byte[]> dict = new Dictionary<string, byte[]>();
+        dict.Add(_jwk, cipherText);
+        CryptographicOperations.ZeroMemory(_key);
+        return dict;
+    }
+    /// <summary>
+    /// Decrpt session 
+    /// </summary>
+    /// <param name="cipherText">host encrypted content</param>
+    /// <param name="jti"></param>
+    /// <param name="jwk"></param>
+    /// <returns></returns>
+    public byte[] Decrypt(byte[] cipherText, Guid jti, string jwk)
+    {
+        Dictionary < string, byte[]> dict = DeriveSessionKey(jti, jwk);
+        byte[] _key = dict.FirstOrDefault().Value;
         byte[] obj = OneCipher.XDecrypt(_key, cipherText);
         CryptographicOperations.ZeroMemory(_key);
         return obj;
     }
-    public Dictionary<string, byte[]> SharedSecret(string jwkJson)
+    #endregion 
+    public Dictionary<string, byte[]> SharedSecret(string jwtoken)
     {
-        byte[] pKeyBytes = JwkToPKeyBytes(jwkJson);
+        string jwk = FidoProvider.ExtractJwk(jwtoken);
+        byte[] pKeyBytes = JwkToPKeyBytes(jwk);
         var keys = Edward25519.KeyAgreement.GenerateKeyPair(); // ephemerial
         byte[] sharedSecret = Edward25519.KeyAgreement.Agreement(keys.PrivateKey, pKeyBytes);
         var dict = new Dictionary<string, byte[]>();
@@ -600,20 +602,22 @@ public class FidoProvider
     /// <param name="jti"></param>
     /// <param name="jwk"></param>
     /// <returns></returns>
-    private byte[] DeriveSessionKey(Guid jti, string jwk)
+    private Dictionary<string, byte[]> DeriveSessionKey(Guid jti, string jwk)
     {
 
         byte[] _key = DeriveKey(ds.KeyHandle);
         var dKey = Shake256.HashData(_key.Concat(jti.ToByteArray()).ToArray(), 32); // add jti (GRND entropy) to static _key
         var kp = Edward25519.Ed25519.GenerateKeyPair(dKey);
         byte[] sharedSecret = Edward25519.KeyAgreement.Agreement(kp.PrivateKey, JwkToPKeyBytes(jwk));
-
-        return sharedSecret;
+        var dict = new Dictionary<string, byte[]>();
+        string sjwk = ExportEcdhToJwk(kp.PublicKey);
+        dict.Add(sjwk, sharedSecret);
+        return dict;
     }
 
     private byte[] GetDeviceKey()
     {
-        return ProtectedData.Unprotect(protDeviceKey, null, DataProtectionScope.CurrentUser);
+        return ProtectedData.Unprotect(ds.ProtectedDeviceKey, null, DataProtectionScope.CurrentUser);
     }
 
     private bool ByteArrayCompare(byte[] a1, byte[] a2)
