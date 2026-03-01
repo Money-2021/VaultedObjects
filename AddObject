@@ -1,14 +1,31 @@
-  [TestMethod]
   public void TestMethod_add_object()
-  {
+ {
+     SET_DEV();
+     string folder = Environment.GetEnvironmentVariable("Envionment");
 
-      // Load User Token
-      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-      string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
-      string sToken = System.IO.File.ReadAllText(userTokenPath);
+     string sin = Environment.GetEnvironmentVariable("DeviceTestA");
+     string userTokenPath;
+     if (folder == "SMS")
+         userTokenPath = @"D:\Examples\Devices\VO\SMS\DeviceStore-" + sin + ".json";
+     else
+         userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + sin + ".json";
+    
+     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
+     // Obtain VaultMe token for this vaulting session
+     string vaultMeToken = Support.VaultMe(userTokenPath);
 
-      // Obtain VaultMe token for this vaulting session
-      string vaultMeToken = vault_me(userTokenPath);
+     // Prepare object
+     byte[] objectbytes = Encoding.UTF8.GetBytes("This is test content");
+     string filename = "Test.txt";
+  
+     // Encode and Protect
+     Dictionary<string, byte[]> dict = ObjectToken.Protect(fp, objectbytes, filename, vaultMeToken);
+     string objInfo = dict.FirstOrDefault().Key;
+     byte[] pData = dict.FirstOrDefault().Value;
+
+     // Add
+     Guid objId = Support.AddObject(fp, vaultMeToken, objectbytes, objInfo);
+
    
-      UserToken.AddObject(userTokenPath, vaultMeToken, "test.txt", Encoding.UTF8.GetBytes("This is test content"));
-  }
+  
+ }
