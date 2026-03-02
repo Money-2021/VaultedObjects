@@ -40,7 +40,7 @@ public class FidoProvider
         public string SecureIdentity { get; set; }      // Secure Identity
         public byte[] KeyHandle { get; set; }           // Registration Key Handle 
         public string JwKey { get; set; }               // Device Ed25519 Public Key
-        public long Counter { get; set; }                 // Cik (32 bit signed integer)
+        public ulong Counter { get; set; }                 // Cik (32 bit signed integer)
         public string JwToken { get; set; }             // User JWToken
         public byte[] ProtectedDeviceKey { get; set; }
         public string DeviceSin { get; set; }           // Device Secure Identity
@@ -108,7 +108,7 @@ public class FidoProvider
                                 ProtectedDeviceKey = Convert.FromBase64String(text);
                                 break;
                             case "Counter":
-                                Counter = Convert.ToInt32(text);
+                                Counter = Convert.ToUInt64(text);
                                 break;
                             case "JwKey":
                                 JwKey = text;
@@ -178,13 +178,9 @@ public class FidoProvider
         byte[] rnd = RandomNumberGenerator.GetBytes(16);
         return new Guid(rnd);
     }
-    public byte[] LongToBytes(long value)
+    public byte[] LongToBytes(ulong value)
     {
-        ulong _value = (ulong)value;
-
-        return BitConverter.IsLittleEndian
-            ? new[] { (byte)((_value >> 56) & 0xFF), (byte)((_value >> 48) & 0xFF), (byte)((_value >> 40) & 0xFF), (byte)((_value >> 32) & 0xFF), (byte)((_value >> 24) & 0xFF), (byte)((_value >> 16) & 0xFF), (byte)((_value >> 8) & 0xFF), (byte)(_value & 0xFF) }
-            : new[] { (byte)(_value & 0xFF), (byte)((_value >> 8) & 0xFF), (byte)((_value >> 16) & 0xFF), (byte)((_value >> 24) & 0xFF), (byte)((_value >> 32) & 0xFF), (byte)((_value >> 40) & 0xFF), (byte)((_value >> 48) & 0xFF), (byte)((_value >> 56) & 0xFF) };
+        return BitConverter.GetBytes(value);
     }
     public static string ExtractAudience(string token)
     {
@@ -231,7 +227,7 @@ public class FidoProvider
     {
         return ds.DeviceSin;
     }
-    public long GetCounter()
+    public ulong GetCounter()
     {
         return ds.Counter;
     }
@@ -279,7 +275,7 @@ public class FidoProvider
         {
             isProtected = protect;
         }
-        public long counter { get; set; }
+        public ulong counter { get; set; }
         public byte[] share { get; set; }
         public string jwToken { get; set; }
         public bool? isProtected { get; set; } //  encrypted setupcode
@@ -338,7 +334,15 @@ public class FidoProvider
         var valid = tokenDate.AddDays(-2) <= now;
         return valid;
     }
+    public void SaveStore(string userTokenPath)
+    {
+        // Serialise
+        JsonSerializerOptions jso = new JsonSerializerOptions();
+        jso.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+        string json = JsonSerializer.Serialize<DeviceStore>(ds, jso);
+        System.IO.File.WriteAllText(userTokenPath, json);
 
+    }
     public static void SaveStore(string userTokenPath, DeviceStore store)
     {
         // Serialise
@@ -381,7 +385,11 @@ public class FidoProvider
         // Save
         SaveStore(tokenPath, ds);
     }
-   
+    public void SetCounter(UInt32 cnt)
+    {
+         ds.Counter = cnt;
+    }
+
     public static string ExportEcdhToJwk(byte[] pubkey)
     {
         // Build JsonWebKey
@@ -526,13 +534,15 @@ public class FidoProvider
         }
         return _key;
     }
-
+    
+   
     public string XShare(string jwkJson)
     {
         byte[] pKeyBytes = JwkToPKeyBytes(jwkJson);
         var keys = Edward25519.KeyAgreement.GenerateKeyPair(); // ephemerial
         return ExportEcdhToJwk(keys.PublicKey);
     }
+
     #region schannel
     /// <summary>
     /// Encrypt session
@@ -545,6 +555,7 @@ public class FidoProvider
         Guid jti = FidoProvider.ExtractJti(jwtoken);
         string jwk = FidoProvider.ExtractJwk(jwtoken);
         byte[] pk = FidoProvider.JwkToPKeyBytes(jwk);
+
         // Derive session key
         var dict = new Dictionary<byte[], byte[]>();
         Dictionary<string, byte[]> d = DeriveSessionKey(jti, jwk);
@@ -559,16 +570,18 @@ public class FidoProvider
         Guid jti = FidoProvider.ExtractJti(jwtoken);
         string jwk = FidoProvider.ExtractJwk(jwtoken);
         byte[] pk = FidoProvider.JwkToPKeyBytes(jwk);
+
         // Derive session key
-        Dictionary<string, byte[]> d = SharedSecret(jwtoken);
-        string _jwk = d.FirstOrDefault().Key;
+        var dict = new Dictionary<string, byte[]>();
+        Dictionary<string, byte[]> d = SharedSecret(jwk);
         byte[] _key = d.FirstOrDefault().Value;
+        string _jwk = d.FirstOrDefault().Key;
         byte[] cipherText = OneCipher.XEncrypt(_key, data);
-        Dictionary<string, byte[]> dict = new Dictionary<string, byte[]>();
         dict.Add(_jwk, cipherText);
         CryptographicOperations.ZeroMemory(_key);
         return dict;
     }
+  
     /// <summary>
     /// Decrpt session 
     /// </summary>
@@ -585,9 +598,9 @@ public class FidoProvider
         return obj;
     }
     #endregion 
-    public Dictionary<string, byte[]> SharedSecret(string jwtoken)
+    public Dictionary<string, byte[]> SharedSecret(string jwk)
     {
-        string jwk = FidoProvider.ExtractJwk(jwtoken);
+        //string jwk = FidoProvider.ExtractJwk(jwtoken);
         byte[] pKeyBytes = JwkToPKeyBytes(jwk);
         var keys = Edward25519.KeyAgreement.GenerateKeyPair(); // ephemerial
         byte[] sharedSecret = Edward25519.KeyAgreement.Agreement(keys.PrivateKey, pKeyBytes);
