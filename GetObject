@@ -1,113 +1,119 @@
-[TestMethod]
-public void TestMethod_get_object()
-{
-    string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-    string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
-    UserToken.RecoveryResponse r =  UserToken.GetUserToken(userTokenPath);
+ [TestMethod]
+ public void TestMethod_get_object()
+ {
+     SET_DEV();
+     string device_sin = Environment.GetEnvironmentVariable("DeviceTestA");
+     string userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + device_sin + ".json";
 
-    Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
-    string objectId  = <objectid>;
-    id = new Guid(objectId);
+     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
+
+     Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
+     string objectId  = ObjectStoreDB.List(fp.GetSecureIdentity()).FirstOrDefault().ObjectId;
+     id = new Guid(objectId);
 
 
-    // Extract Function endpoint from User Token
-    var securityToken = new JwtSecurityToken(r.jwToken);
-    Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
-    //_baseUri = new Uri("http://localhost:54718/");
+     // Extract Function endpoint from device Token
+     Uri _baseUri = new Uri(fp.Audience());
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Object/Get?id=" + id;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
 
-    // Build funtion endpoint Uri
-    HttpClient _httpClient = new HttpClient();
-    string _relativeUrl = "Object/Get?id=" + id;
-    Uri _uri = new Uri(_baseUri, _relativeUrl);
-    _httpClient.BaseAddress = _baseUri;
+     // Add Device Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
 
-    // Add User Jwtoken
-    _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
+     // Calc Auth Hash
+     string shash = id.ToString() + device_sin;
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
+    string signature = fp.SignHash(hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", signature);
 
-    // Calc Auth Hash
-    string shash = id.ToString() + SecureIdentity;
-    byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
-    string ssign = HmacProvider.SignHash(r.share, hashBytes);
-    _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+     // Get Vaulted Object download URL
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // Async download via SAS Uri
+         string rsp = response.Content.ReadAsStringAsync().Result;
+         VaultedResponse r = VaultedResponse.Decode(rsp);
+         if (r.ObjectId != null)
+         {
+             // Local device decrypt
+             byte[]? objContent = r.GetUrlContent().Result;
+             byte[] obj = fp.Decrypt(objContent, r.Jti, r.Jwk);
+         }
+         else
+         {
+             throw new Exception("Conent download error");
+         }
 
-    // Get Vaulted Object download URL
-    HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
-    if (response.IsSuccessStatusCode)
-    {
-        // Async download via SAS Uri
-        string uri = response.Content.ReadAsStringAsync().Result;
-        byte[]? objContent = UserToken.GetUrlContent(uri).Result;
-        if (objContent != null)
-        {
-            // Decrypt
-            byte[] data = AesProvider.Decrypt(r.share, objContent);
-        }
-        else
-        {
-            throw new Exception("Conent download error");
-        }
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
 
-    }
-    else
-    {
-        // fail
-        string error = response.Content.ReadAsStringAsync().Result;
-        throw new Exception(error);
-    }
-
-}
+ }
 
 ///
 /// This funtion retieves the ITS encrypted AESGCM encryptied object for local storage  purposes.
 
-   [TestMethod]
-  public void TestMethod_get_object_jwt()
-  {
-      string SecureIdentity = Environment.GetEnvironmentVariable("TestA");
-      string userTokenPath = @"D:\Examples\VO\Token-" + SecureIdentity + ".jwt";
-      UserToken.RecoveryResponse r = UserToken.GetUserToken(userTokenPath);
+ [TestMethod]
+ public void TestMethod_get_object_jwt()
+ {
+    
+     SET_DEV();
+     string folder = Environment.GetEnvironmentVariable("Envionment");
 
-      Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
-      string objectId = <objectid>
-      id = new Guid(objectId);
+     string device = Environment.GetEnvironmentVariable("DeviceTestA");
+     string userTokenPath;
+     if (folder == "SMS")
+         userTokenPath = @"D:\Examples\Devices\VO\SMS\DeviceStore-" + device + ".json";
+     else
+         userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + device + ".json";
 
+     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
 
-      // Extract Function endpoint from User Token
-      var securityToken = new JwtSecurityToken(r.jwToken);
-      Uri _baseUri = new Uri(securityToken.Audiences.FirstOrDefault());
-      //_baseUri = new Uri("http://localhost:54718/");
+     Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
+     string objectId = ObjectStoreDB.List(fp.GetSecureIdentity()).FirstOrDefault().ObjectId;
+     id = new Guid(objectId);
+           
+     Uri _baseUri = new Uri(fp.Audience());
+     // Build funtion endpoint Uri
+     HttpClient _httpClient = new HttpClient();
+     string _relativeUrl = "Object/Get?id=" + id;
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Force jwt response
+     _httpClient.DefaultRequestHeaders.Add("x-type", "jwt");
+     // Add User Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
+     // Calc Auth Hash
+     string shash = id.ToString() + device;
+     byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
+     string ssign = fp.SignHash(hashBytes);
+     _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+     // Get Vaulted Object download URL
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         // Astnc download via SAS Uri
+         string rsp = response.Content.ReadAsStringAsync().Result;
+         VaultedResponse r = VaultedResponse.Decode(rsp);
 
-      // Build funtion endpoint Uri
-      HttpClient _httpClient = new HttpClient();
-      string _relativeUrl = "Object/Get?id=" + id;
-      Uri _uri = new Uri(_baseUri, _relativeUrl);
-      _httpClient.BaseAddress = _baseUri;
-      // Force jwt response
-      _httpClient.DefaultRequestHeaders.Add("x-type", "jwt");
-      // Add User Jwtoken
-      _httpClient.DefaultRequestHeaders.Add("x-token", r.jwToken);
-      // Calc Auth Hash
-      string shash = id.ToString() + SecureIdentity;
-      byte[] hashBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(shash));
-      string ssign = HmacProvider.SignHash(r.share, hashBytes);
-      _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
-      // Get Vaulted Object download URL
-      HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
-      if (response.IsSuccessStatusCode)
-      {
-          // Astnc download via SAS Uri
-          string uri = response.Content.ReadAsStringAsync().Result;
-          byte[]? objContent = UserToken.GetUrlContent(uri).Result;
-          userTokenPath = @"D:\Examples\VO\Object-" + objectId + ".jwt";
-          System.IO.File.WriteAllBytes(userTokenPath, objContent);
+         byte[]? objContent = r.GetUrlContent().Result;
+         userTokenPath = @"D:\Examples\VO\Object-" + objectId + ".jwt";
+         System.IO.File.WriteAllBytes(userTokenPath, objContent);
 
-          Debug.WriteLine(uri);
-      }
-      else
-      {
-          // fail
-          string error = response.Content.ReadAsStringAsync().Result;
-          throw new Exception(error);
-      }
+         Debug.WriteLine(r.Download);
+     }
+     else
+     {
+         // fail
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
 
-  }
+ }
