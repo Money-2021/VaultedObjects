@@ -1,31 +1,30 @@
-  public void TestMethod_add_object()
- {
-     SET_DEV();
-     string folder = Environment.GetEnvironmentVariable("Envionment");
+[TestMethod]
+public void TestMethod_add_object()
+{
+    SET_DEV();
+    string folder = Environment.GetEnvironmentVariable("Envionment");
 
-     string sin = Environment.GetEnvironmentVariable("DeviceTestA");
-     string userTokenPath;
-     if (folder == "SMS")
-         userTokenPath = @"D:\Examples\Devices\VO\SMS\DeviceStore-" + sin + ".json";
-     else
-         userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + sin + ".json";
-    
-     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
-     // Obtain VaultMe token for this vaulting session
-     string vaultMeToken = Support.VaultMe(userTokenPath);
-
-     // Prepare object
-     byte[] objectbytes = Encoding.UTF8.GetBytes("This is test content");
-     string filename = "Test.txt";
-  
-     // Encode and Protect
-     Dictionary<string, byte[]> dict = ObjectToken.Protect(fp, objectbytes, filename, vaultMeToken);
-     string objInfo = dict.FirstOrDefault().Key;
-     byte[] pData = dict.FirstOrDefault().Value;
-
-     // Add
-     Guid objId = Support.AddObject(fp, vaultMeToken, objectbytes, objInfo);
-
+    string sin = Environment.GetEnvironmentVariable("DeviceTestA");
+    string userTokenPath;
+    if (folder == "SMS")
+        userTokenPath = @"D:\Examples\Devices\VO\SMS\DeviceStore-" + sin + ".json";
+    else
+        userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + sin + ".json";
    
-  
- }
+    FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
+
+    // Obtain VaultMe token for this vaulting session
+    string vaultMeToken = Support.VaultMe(userTokenPath);
+    // Prepare object
+    byte[] objectbytes = Encoding.UTF8.GetBytes("This is test content");
+    string filename = "Test.txt";
+ 
+    // Encode and Protect
+    Dictionary<string, byte[]> dict = ObjectToken.Protect(fp, objectbytes, filename, vaultMeToken);
+    string objInfo = dict.FirstOrDefault().Key;
+    byte[] pData = dict.FirstOrDefault().Value;
+      
+    // Add Object To Vault
+    Guid objId = Support.AddObject(fp, vaultMeToken, objectbytes, objInfo);
+    // Save Vault->Object Identifier to local mapping store
+}
