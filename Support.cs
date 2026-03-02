@@ -1,4 +1,4 @@
-﻿  public class Support
+﻿   public class Support
   {
       public static Guid MaxValue = new Guid("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
      
@@ -383,7 +383,7 @@
                       case "jti":
                           vo.Jti = new Guid(value.ToString());
                           break;
-                      case "uri":
+                      case "download":
                           vo.Download = new Uri(value.ToString());
                           break;
                   }
