@@ -11,7 +11,7 @@ public void TestMethod_add_object()
     else
         userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + sin + ".json";
 
-    // Call provided library dll 
+    // Call provided Fido library dll 
     Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
 
     // Obtain VaultMe token for this vaulting session
