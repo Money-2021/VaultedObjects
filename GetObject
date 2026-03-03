@@ -5,7 +5,7 @@
      string device_sin = Environment.GetEnvironmentVariable("DeviceTestA");
      string userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + device_sin + ".json";
 
-     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
+     Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
 
      Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
      string objectId  = ObjectStoreDB.List(fp.GetSecureIdentity()).FirstOrDefault().ObjectId;
@@ -74,8 +74,8 @@
      else
          userTokenPath = @"D:\Examples\Devices\VO\DeviceStore-" + device + ".json";
 
-     FidoProvider fp = FidoProvider.GetProvider(userTokenPath);
-
+     Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
+ 
      Guid id; //= new Guid(""); // Fill with Vaulted Object Identifier
      string objectId = ObjectStoreDB.List(fp.GetSecureIdentity()).FirstOrDefault().ObjectId;
      id = new Guid(objectId);
