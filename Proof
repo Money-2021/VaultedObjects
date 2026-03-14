@@ -26,12 +26,16 @@ The proprietary KMS-Medley Key generator (KG) takes a QRNG (TRNG) seed and produ
 Medley is based upon a proprietry KG, which generates a CSRBG key stream upon demand, the KG TRNG seed is never stored, and has a secure ephemerial (one time) existance.
 Medley supports user defined KG-universals to enable the creation of arbitary key domains to suit a wide range of operational deployments of an ITS-KMS.
 
+TS-SCI/Codeword or Commercial-Need to Know
+The solution supports Top Secret/Sensitive Compartmented Information or commercial need-to-know, cloud based solutions (hardware or software backed). 
+The ITS-KMS supports the implementation of Medley 'Univsersals" which guarentee seperation between cryptographic Key Generators, hence ensuring ITS based seperation of entangled Key Generators.
+To ensure backward compatablity all existing human based codewaords can be ustilised to enforce "need to know" requirements for both military and commercial use cases.
+
 Cryptographicly Secure Keys
 Riddle me this?
 Can any deterministic function create entropy?
 The answer is always no, it cannot...
-
-It is a simple fact, that no computational function can create entropy as it is deterministic or a just a PRNG source of fixed entropy. A Key Generator is nondeterministic; hence it can create entropy via external real-world entropy. Thus, a Key Generator creates CSNBRNG keys. But the entropy is still limited to the entropy of the real-world source.
+It is a simple reality, that no computational function can create entropy as it is deterministic or a just a variat of a PRNG source of fixed entropy. A Key Generator is nondeterministic; hence it can create entropy via external real-world entropy. Thus, a Key Generator creates CSNBRNG keys. But the entropy is still limited to the entropy of the real-world source.
 Information Theoretic security requires, and is underpinned by the existence of a Cryptographic Secure Non-Deterministic Random Bit Stream generator anchored in a real-world entropy.
 
 A CSNBRNG key is not a key or even a QRND number in the typical sense, it must be a cryptographically secure key stream QRNG, which is not derived, via any computational algorithm. The key stream has to be derived (extracted) from a physical processes (in the case for medley from a QRND source).
