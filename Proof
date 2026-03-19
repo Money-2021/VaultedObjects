@@ -26,7 +26,7 @@ The proprietary KMS-Medley Key generator (KG) takes a QRNG (TRNG) seed and produ
 Medley is based upon a proprietry KG, which generates a CSRBG key stream upon demand, the KG TRNG seed is never stored, and has a secure ephemerial (one time) existance.
 Medley supports user defined KG-universals to enable the creation of arbitary key domains to suit a wide range of operational deployments of an ITS-KMS.
 
-TS-SCI/Codeword or Commercial-Need to Know
+SCI/Codeword or Commercial-Need to Know
 The solution supports Top Secret/Sensitive Compartmented Information or commercial need-to-know, cloud based solutions (hardware or software backed). 
 The ITS-KMS supports the implementation of Medley 'Univsersals" which guarentee seperation between cryptographic Key Generators, hence ensuring ITS based seperation of entangled Key Generators.
 To ensure backward compatablity all existing human based codewaords can be ustilised to enforce "need to know" requirements for both military and commercial use cases.
