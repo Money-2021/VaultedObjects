@@ -39,7 +39,7 @@ The answer is always no, it cannot...
 It is a simple reality, that no computational function can create entropy as it is deterministic or a just a variat of a PRNG source of fixed entropy. A Key Generator is nondeterministic; hence it can create entropy via external real-world entropy. Thus, a Key Generator creates CSNBRNG keys. But the entropy is still limited to the entropy of the real-world source.
 Information Theoretic security requires, and is underpinned by the existence of a Cryptographic Secure Non-Deterministic Random Bit Stream generator anchored in a real-world entropy.
 
-A CSNBRNG key is not a key or even a QRND number in the typical sense, it must be a cryptographically secure key stream QRNG, which is not derived, via any computational algorithm. The key stream has to be derived (extracted) from a physical processes (in the case for medley from a QRND source).
+A Cryptographic Secure Non-Deterministic Random Bit Stream(CSNBRNG) varable elngth key is not a key or even a QRND number in the typical sense, it must be a cryptographically secure key stream QRNG, which is not derived, via any computational algorithm. The key stream has to be derived (extracted) from a physical processes (in the case for medley from a QRND source).
 One cannot compute an algorithm to generate a 'key stream' as the result would be a deterministic and hence represent a predictable PRNG, not a cryptography secure key stream and be a non-deterministic key stream not computed directly from a seed/key.
 
 Last Mile Mandatory Security POlicy
@@ -52,9 +52,9 @@ Conclusion
 The Medley (ITS-KMS) creates a pairwise, potentially infinate length, identical secure bit stream (all bits of the key have equal propablity) between two secure Identites (end points) according to this proof.
 
 Notes
-1. Medly is a pair-wise, cooperative key generation scheme, the Key Generation Cipher is provably (above) immune from all forms of attack vectors, as the CSBRND keys are crypyographically secure. 
+1. Medly is a pair-wise, cooperative key generation scheme, the Key Generation Cipher is provably (above) immune from all forms of attack vectors, as the CSNBRND keys are crypyographically secure. 
 2. Medley cipher, at an abstract level, is essential the XOR (vernam cipher) of two corperatly generated TRNG bit streams.
-3. The Medley protocol produces a set of Medley Vectors, these engangle the Key Generators to produce an identical CSBRND bit stream (of potentially infinite length).
+3. The Medley protocol produces a set of Medley Vectors, these engangle the Key Generators to produce an identical CSNBRND bit stream (of potentially infinite length).
 3. Quantium Key Distribution (QKD) self deprecates as  within QKD, both participating parties need a) the physical devices, b) a connection between those that allows to run QKD, and 
 c) still some authentication method which either requires a shared secret or some complexity-theoretically secure signature scheme. In short in QKD the two parties have to know each other 
 before communicating and pre-stage shared data first. This defeats the purpose of QKD itself.
