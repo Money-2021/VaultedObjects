@@ -49,7 +49,7 @@ Last Mile Mandatory Security POlicy
 
 
 Conclusion 
-The Medley (ITS-KMS) creates a pairwise, potentially infinate length, identical secure bit stream (all bits of the key have equal propablity) between two secure Identites (end points) according to this proof.
+The Medley (ITS-KMS) creates a pairwise, potentially infinate length, identical secure bit stream (all bits of the key have equal propablity) between two secure Identites (end point devices) according to this proof.
 
 Notes
 1. Medly is a pair-wise, cooperative key generation scheme, the Key Generation Cipher is provably (above) immune from all forms of attack vectors, as the CSNBRND keys are crypyographically secure. 
