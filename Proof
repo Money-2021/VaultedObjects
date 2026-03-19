@@ -41,9 +41,9 @@ Information Theoretic security requires, and is underpinned by the existence of 
 A CSNBRNG key is not a key or even a QRND number in the typical sense, it must be a cryptographically secure key stream QRNG, which is not derived, via any computational algorithm. The key stream has to be derived (extracted) from a physical processes (in the case for medley from a QRND source).
 One cannot compute an algorithm to generate a 'key stream' as the result would be a deterministic and hence represent a predictable PRNG, not a cryptography secure key stream and be a non-deterministic key stream not computed directly from a seed/key.
 
-Last Mile Security POlicy
+Last Mile Mandatory Security POlicy
 1. All comminations Shall be One Cipher (ITS) secured indpendent of communication media or sChannel security.
-2. All devices require mandatory biometric authtication, such as Windows Hello finger prints or Android device finger prints for InFoSec use cases.
+2. All InfoSec devices require mandatory biometric authtication, such as Windows Hello finger prints or Android device finger prints for InFoSec use cases.
 3. All Vaulted Objects shall be end-to-end Once Cipher (device to device) secured before the applaiction of device to host and host One Cipher wrapped.
 
 
