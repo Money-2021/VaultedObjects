@@ -19,7 +19,7 @@ public void TestMethod_infosec_store()
 
     InfoSecToken tkn = new InfoSecToken();
     tkn.Jti = Arrays.RandomGuid();
-    tkn.ObjectHash = new SHAKE256(64 * 8).ComputeHash(cnt);
+    tkn.ObjectHash =  Shake256.HashData(cnt, 64); 
     tkn.ObjectId = new Guid(tkn.ObjectHash.TakeLast(16).ToArray());
     tkn.FileName = filename;
     tkn.JwToken = vaultMeToken;
