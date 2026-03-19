@@ -18,7 +18,7 @@ public void TestMethod_infosec_store()
     string jwk = SqlServer.Providers.JwtProvider.ExtractJwk(vaultMeToken);
 
     InfoSecToken tkn = new InfoSecToken();
-    tkn.Jti = Arrays.RandomGuid();
+    tkn.Jti = fp.RandomGuid();
     tkn.ObjectHash =  Shake256.HashData(cnt, 64); 
     tkn.ObjectId = new Guid(tkn.ObjectHash.TakeLast(16).ToArray());
     tkn.FileName = filename;
